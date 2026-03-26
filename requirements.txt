@@ -1,0 +1,16 @@
+opencv-python
+numpy
+pyzbar
+PyNaCl
+cbor2
+msgpack
+qrcode[pil]
+Pillow
+pytest
+cryptography
+fastapi
+uvicorn
+requests
+torch
+torchvision
+PyJWT
