@@ -63,7 +63,7 @@ STATUS_STYLES = {
     'success': ('Success', '#0f7b4d'),
     'partial': ('Partial', '#b36a00'),
     'error': ('Failed', '#b3261e'),
-    'idle': ('Idle', '#475467'),
+    'idle': ('Ready', '#475467'),
 }
 
 
@@ -118,11 +118,160 @@ def _pretty_json(data: Any) -> str:
         return str(data)
 
 
+def _status_word(result_dict: dict[str, Any]) -> str:
+    if result_dict.get('success'):
+        return 'SUCCESS'
+    if result_dict.get('partial_success'):
+        return 'PARTIAL SUCCESS'
+    return 'FAILED'
+
+
+def _method_explanation(result_dict: dict[str, Any]) -> tuple[str, str]:
+    base = result_dict.get('base_result') or {}
+    payload = base.get('parsed_payload') or {}
+    quality = base.get('quality') or {}
+    attempts = base.get('attempts') or []
+    notes = result_dict.get('notes') or []
+    stage = result_dict.get('enhancement_stage') or base.get('stage') or 'unknown'
+    decoder = base.get('decoder')
+    used: list[str] = []
+    why: list[str] = []
+    used_seen: set[str] = set()
+    why_seen: set[str] = set()
+
+    def add_used(line: str) -> None:
+        if line and line not in used_seen:
+            used.append(f'• {line}')
+            used_seen.add(line)
+
+    def add_why(line: str) -> None:
+        if line and line not in why_seen:
+            why.append(f'• {line}')
+            why_seen.add(line)
+
+    add_used(f'Overall verdict: {_status_word(result_dict)}.')
+    if decoder:
+        add_used(f'Decoder selected for the final read: {decoder}.')
+    if stage == 'direct' and base.get('success'):
+        add_used('Direct decoding was sufficient, so no heavier recovery stage was needed.')
+    elif stage and stage != 'unknown':
+        add_used(f'The decisive recovery stage was {stage}.')
+    if result_dict.get('roi_used'):
+        add_used('ROI tracking was used to focus decoding on the most relevant QR region.')
+    if result_dict.get('camera_adaptation'):
+        add_used('Adaptive camera metadata was present for this frame and was included in the decision context.')
+    if stage == 'multi-frame-fusion':
+        add_used('Multi-frame fusion contributed to the successful decode across consecutive frames.')
+    if payload.get('payload_kind') == 'split-chunk':
+        add_used('Split-QR parsing was used for this case, so the scan was interpreted as one chunk of a larger transport sequence.')
+    if result_dict.get('split_progress'):
+        add_used(f"Split-QR assembly state: {result_dict.get('split_progress')}.")
+    if result_dict.get('partial_success'):
+        add_used('This is a partial success because the current chunk was captured, but the full assembled payload is not complete yet.')
+
+    successful_attempts = [a for a in attempts if a.get('success')]
+    if successful_attempts:
+        stages = ', '.join(sorted({f"{a.get('stage')} via {a.get('decoder')}" for a in successful_attempts if a.get('stage') and a.get('decoder')}))
+        if stages:
+            add_used(f'Successful attempt trace: {stages}.')
+    elif attempts:
+        tried = ', '.join(sorted({f"{a.get('stage')} via {a.get('decoder')}" for a in attempts if a.get('stage') and a.get('decoder')}))
+        if tried:
+            add_used(f'Attempted methods before the final outcome: {tried}.')
+
+    note_map = [
+        ('screen-like moire or watermark artifacts detected', 'Screen-like moire or watermark patterns were detected, so decoder robustness against display artifacts mattered here.'),
+        ('low-light detected', 'Low-light conditions were detected, so illumination-aware handling was relevant for this case.'),
+        ('low sharpness detected', 'Reduced sharpness was detected, so blur-tolerant recovery mattered for this case.'),
+        ('small QR projection detected', 'The QR footprint was small in the image, so scale-sensitive recovery was important.'),
+        ('oversized QR crop detected', 'The QR occupied too much of the frame, which can damage locator geometry and require crop-aware handling.'),
+        ('glare or low local contrast detected', 'Local contrast issues or glare were detected, so contrast-sensitive recovery was relevant.'),
+        ('no locator match, trying distance or soft-focus strategy', 'The locator was weak, so the pipeline switched toward distance or soft-focus recovery logic.'),
+        ('using calibrated thresholds', 'Calibrated thresholds were active, so the decision logic was adapted to observed image statistics rather than fixed constants.'),
+        ('Decode succeeded after online pipeline switch:', 'An online pipeline switch changed the preprocessing strategy and directly enabled the successful decode.'),
+        ('Direct decode succeeded', 'The original image quality was sufficient for a direct read, so no additional recovery cost was required.'),
+        ('Decode recovered via multi-frame fusion', 'Temporal fusion across frames contributed to the recovery, which is useful in unstable live-camera conditions.'),
+        ('Decode recovered inside tracked ROI', 'Tracking the QR region reduced the search area and helped the system concentrate on the most informative pixels.'),
+        ('Provisioning pipeline executed', 'The decoded payload was strong enough to continue into the provisioning stage.'),
+        ('Parity reconstruction recovered missing split chunk', 'Parity information allowed the system to reconstruct a missing split chunk and finish assembly.'),
+    ]
+    for note in notes:
+        matched = False
+        for prefix, line in note_map:
+            if note.startswith(prefix):
+                add_why(line)
+                matched = True
+                break
+        if not matched:
+            add_why(note[0].upper() + note[1:] + ('' if note.endswith('.') else '.'))
+
+    if quality.get('operator_hint'):
+        add_why(f"Operator-facing quality hint: {quality.get('operator_hint')}.")
+
+    if not why:
+        if result_dict.get('success'):
+            add_why('The available evidence was sufficient for a successful final decode.')
+        elif result_dict.get('partial_success'):
+            add_why('The scan produced a usable intermediate result, but full completion still requires additional chunks or frames.')
+        else:
+            add_why('The available evidence was not strong enough for a complete decode under the current conditions.')
+
+    return '\n'.join(used), '\n'.join(why)
+
+
 @dataclass
 class GeneratedPreview:
     image: Image.Image
     log_text: str
     saved_paths: list[str]
+
+
+class ScrollableTabFrame:
+    def __init__(self, parent, tk, ttk, background: str) -> None:
+        self.tk = tk
+        self.ttk = ttk
+        self.outer = ttk.Frame(parent)
+        self.canvas = tk.Canvas(self.outer, background=background, highlightthickness=0, bd=0)
+        self.v_scroll = ttk.Scrollbar(self.outer, orient='vertical', command=self.canvas.yview)
+        self.canvas.configure(yscrollcommand=self.v_scroll.set)
+        self.v_scroll.pack(side='right', fill='y')
+        self.canvas.pack(side='left', fill='both', expand=True)
+        self.body = ttk.Frame(self.canvas)
+        self._window_id = self.canvas.create_window((0, 0), window=self.body, anchor='nw')
+        self.body.bind('<Configure>', self._sync_scrollregion)
+        self.canvas.bind('<Configure>', self._sync_width)
+        self.body.bind('<Enter>', self._bind_mousewheel)
+        self.body.bind('<Leave>', self._unbind_mousewheel)
+
+    def pack(self, **kwargs) -> None:
+        self.outer.pack(**kwargs)
+
+    def _sync_scrollregion(self, _event=None) -> None:
+        self.canvas.configure(scrollregion=self.canvas.bbox('all'))
+
+    def _sync_width(self, event) -> None:
+        self.canvas.itemconfigure(self._window_id, width=event.width)
+
+    def _bind_mousewheel(self, _event=None) -> None:
+        self.canvas.bind_all('<MouseWheel>', self._on_mousewheel)
+        self.canvas.bind_all('<Button-4>', self._on_mousewheel)
+        self.canvas.bind_all('<Button-5>', self._on_mousewheel)
+
+    def _unbind_mousewheel(self, _event=None) -> None:
+        self.canvas.unbind_all('<MouseWheel>')
+        self.canvas.unbind_all('<Button-4>')
+        self.canvas.unbind_all('<Button-5>')
+
+    def _on_mousewheel(self, event) -> None:
+        if getattr(event, 'num', None) == 4:
+            self.canvas.yview_scroll(-1, 'units')
+            return
+        if getattr(event, 'num', None) == 5:
+            self.canvas.yview_scroll(1, 'units')
+            return
+        delta = getattr(event, 'delta', 0)
+        if delta:
+            self.canvas.yview_scroll(int(-delta / 120), 'units')
 
 
 class DesktopConsole:
@@ -134,8 +283,8 @@ class DesktopConsole:
         self.ttk = ttk
         self.root = tk.Tk()
         self.root.title('QR Onboarding Research Studio')
-        self.root.geometry('1600x980')
-        self.root.minsize(1320, 820)
+        self.root.geometry('1500x930')
+        self.root.minsize(1180, 780)
 
         self._configure_style()
 
@@ -158,6 +307,12 @@ class DesktopConsole:
         self.last_dataset_rows: list[dict[str, Any]] = []
         self.last_dataset_csv: Optional[Path] = None
         self.camera_counters = {'frames': 0, 'success': 0, 'partial': 0, 'fail': 0}
+        self.last_scan_result: dict[str, Any] | None = None
+        self.last_camera_result: dict[str, Any] | None = None
+        self.last_camera_signature = ''
+        self.camera_preview_interval_s = 0.06
+        self.camera_decode_interval_s = 0.18
+        self.camera_text_refresh_interval_s = 0.35
 
         self._build_ui()
         self._reset_scan_view()
@@ -186,13 +341,13 @@ class DesktopConsole:
         style.configure('TLabel', background=bg, foreground=text)
         style.configure('Muted.TLabel', background=bg, foreground=muted)
         style.configure('CardTitle.TLabel', background=panel, foreground=text, font=('Segoe UI', 11, 'bold'))
-        style.configure('Hero.TLabel', background=bg, foreground=text, font=('Segoe UI', 28, 'bold'))
-        style.configure('Section.TLabel', background=bg, foreground=muted, font=('Segoe UI', 11))
+        style.configure('Hero.TLabel', background=bg, foreground=text, font=('Segoe UI', 24, 'bold'))
+        style.configure('Section.TLabel', background=bg, foreground=muted, font=('Segoe UI', 10))
         style.configure('TButton', padding=(10, 6))
         style.configure('Accent.TButton', padding=(12, 8), background=accent, foreground='white')
         style.map('Accent.TButton', background=[('active', '#1b43c5')])
         style.configure('TNotebook', background=bg, borderwidth=0)
-        style.configure('TNotebook.Tab', padding=(16, 10), font=('Segoe UI', 10, 'bold'))
+        style.configure('TNotebook.Tab', padding=(14, 9), font=('Segoe UI', 10, 'bold'))
         style.configure('Treeview', rowheight=26)
         style.configure('Treeview.Heading', font=('Segoe UI', 10, 'bold'))
 
@@ -208,14 +363,14 @@ class DesktopConsole:
         ttk.Label(header, text='QR Onboarding Research Studio', style='Hero.TLabel').pack(anchor='w')
         ttk.Label(
             header,
-            text='A polished desktop dashboard for scan validation, QR generation, live camera demos, and dataset benchmarking.',
+            text='A polished desktop dashboard for scan validation, QR generation, and live camera demos with explicit method explanations.',
             style='Section.TLabel',
         ).pack(anchor='w', pady=(6, 0))
 
         status_row = ttk.Frame(shell)
         status_row.pack(fill='x', pady=(0, 12))
-        self.hero_status = tk.StringVar(value='Ready for scan, generation, camera demo, or dataset evaluation.')
-        self.hero_stats = tk.StringVar(value='Adaptive thresholds warm-up pending · pipeline stats loaded')
+        self.hero_status = tk.StringVar(value='Ready to scan an image, generate a QR, or test the live camera.')
+        self.hero_stats = tk.StringVar(value='Compact UI mode enabled · live camera updates are throttled for smoother preview')
         ttk.Label(status_row, textvariable=self.hero_status, style='CardTitle.TLabel').pack(anchor='w')
         ttk.Label(status_row, textvariable=self.hero_stats, style='Muted.TLabel').pack(anchor='w', pady=(4, 0))
 
@@ -224,16 +379,13 @@ class DesktopConsole:
         self.scan_tab = ttk.Frame(notebook, padding=8)
         self.generate_tab = ttk.Frame(notebook, padding=8)
         self.camera_tab = ttk.Frame(notebook, padding=8)
-        self.dataset_tab = ttk.Frame(notebook, padding=8)
         notebook.add(self.scan_tab, text='Scan studio')
         notebook.add(self.generate_tab, text='Generate studio')
         notebook.add(self.camera_tab, text='Camera live')
-        notebook.add(self.dataset_tab, text='Dataset lab')
 
         self._build_scan_tab()
         self._build_generate_tab()
         self._build_camera_tab()
-        self._build_dataset_tab()
         self.root.protocol('WM_DELETE_WINDOW', self._on_close)
 
     def _make_card(self, parent, title: str):
@@ -253,6 +405,116 @@ class DesktopConsole:
         for col in range(columns):
             parent.columnconfigure(col, weight=1)
 
+    def _build_text_panel(self, parent, *, height: int = 10, background: str = '#fbfcfe'):
+        text = self.tk.Text(parent, wrap='word', font=('Consolas', 10), height=height, relief='flat', background=background)
+        scroll = self.ttk.Scrollbar(parent, orient='vertical', command=text.yview)
+        text.configure(yscrollcommand=scroll.set)
+        text.pack(side='left', fill='both', expand=True)
+        scroll.pack(side='right', fill='y')
+        return text
+
+    def _make_scrollable_body(self, parent):
+        scrollable = ScrollableTabFrame(parent, self.tk, self.ttk, self.palette['bg'])
+        scrollable.pack(fill='both', expand=True)
+        return scrollable.body
+
+    def _build_result_tabs(self, parent):
+        notebook = self.ttk.Notebook(parent)
+        notebook.pack(fill='both', expand=True)
+        payload_tab = self.ttk.Frame(notebook, padding=8)
+        why_tab = self.ttk.Frame(notebook, padding=8)
+        methods_tab = self.ttk.Frame(notebook, padding=8)
+        details_tab = self.ttk.Frame(notebook, padding=8)
+        notebook.add(payload_tab, text='Decoded payload')
+        notebook.add(why_tab, text='Why it happened')
+        notebook.add(methods_tab, text='Methods')
+        notebook.add(details_tab, text='Technical details')
+        return (
+            self._build_text_panel(payload_tab, height=14),
+            self._build_text_panel(why_tab, height=14),
+            self._build_text_panel(methods_tab, height=14),
+            self._build_text_panel(details_tab, height=14),
+        )
+
+    def _payload_display_text(self, result_dict: dict[str, Any]) -> str:
+        base = result_dict.get('base_result') or {}
+        payload = base.get('parsed_payload') or {}
+        normalized = payload.get('normalized') if isinstance(payload, dict) else None
+        sections: list[str] = []
+        if isinstance(normalized, dict) and normalized:
+            sections.append(_pretty_json(normalized))
+        elif payload:
+            sections.append(_pretty_json(payload))
+        decoded_text = base.get('decoded_text')
+        if decoded_text and decoded_text.strip():
+            if not sections or decoded_text.strip() not in sections[0]:
+                sections.append('Decoded text\n' + decoded_text.strip())
+        assembled = result_dict.get('assembled')
+        if assembled:
+            sections.append('Assembly\n' + _pretty_json(assembled))
+        provisioned = result_dict.get('provisioned')
+        if provisioned:
+            sections.append('Provisioning\n' + _pretty_json(provisioned))
+        if result_dict.get('split_progress'):
+            sections.append('Split progress\n' + str(result_dict.get('split_progress')))
+        if not sections:
+            error = result_dict.get('error') or base.get('error')
+            if error:
+                return f'No decoded payload available yet.\n\nReason: {error}'
+            return 'No decoded payload available yet.'
+        return '\n\n'.join(sections)
+
+    def _compact_result_json(self, result_dict: dict[str, Any]) -> str:
+        base = result_dict.get('base_result') or {}
+        quality = base.get('quality') or {}
+        payload = base.get('parsed_payload') or {}
+        compact = {
+            'success': result_dict.get('success', False),
+            'partial_success': result_dict.get('partial_success', False),
+            'error': result_dict.get('error'),
+            'decoder': base.get('decoder'),
+            'stage': result_dict.get('enhancement_stage') or base.get('stage'),
+            'scenario': result_dict.get('scenario'),
+            'payload_kind': payload.get('payload_kind'),
+            'normalized_payload': payload.get('normalized'),
+            'decoded_text': base.get('decoded_text'),
+            'split_progress': result_dict.get('split_progress'),
+            'notes': result_dict.get('notes') or [],
+            'quality': {
+                'brightness': quality.get('mean_brightness'),
+                'contrast': quality.get('contrast_stddev'),
+                'sharpness': quality.get('laplacian_variance'),
+                'operator_hint': quality.get('operator_hint'),
+            },
+            'roi_used': result_dict.get('roi_used', False),
+            'camera_adaptation': result_dict.get('camera_adaptation'),
+        }
+        return _pretty_json(compact)
+
+    def _pipeline_summary_line(self) -> str:
+        try:
+            calibrator = self.system.calibrator
+            calibration_text = 'ready' if calibrator.is_ready else f'warm-up {calibrator.frames_collected}/{calibrator.warmup_frames}'
+        except Exception:
+            calibration_text = 'unavailable'
+        try:
+            summary = self.system.pipeline_stats_summary() or {}
+        except Exception:
+            summary = {}
+        scenario_count = len(summary)
+        best_stage = None
+        best_wins = -1
+        for _scenario, data in summary.items():
+            for stage_name, stage_stats in (data.get('stage_stats') or {}).items():
+                wins = int(stage_stats.get('wins', 0))
+                if wins > best_wins:
+                    best_wins = wins
+                    best_stage = stage_name
+        if best_stage:
+            wins_label = 'wins' if best_wins != 1 else 'win'
+            return f'Calibration: {calibration_text} · Scenarios tracked: {scenario_count} · Top recovery stage: {best_stage} ({best_wins} {wins_label})'
+        return f'Calibration: {calibration_text} · Scenarios tracked: {scenario_count} · No recovery statistics yet.'
+
     def _build_json_panel(self, parent, title: str):
         frame = self._make_card(parent, title)
         text = self.tk.Text(frame, wrap='word', font=('Consolas', 10), height=10, relief='flat', background='#fbfcfe')
@@ -264,56 +526,45 @@ class DesktopConsole:
 
     def _build_scan_tab(self) -> None:
         tk, ttk = self.tk, self.ttk
-        container = ttk.PanedWindow(self.scan_tab, orient='horizontal')
+        body = self._make_scrollable_body(self.scan_tab)
+        container = ttk.PanedWindow(body, orient='horizontal')
         container.pack(fill='both', expand=True)
         left = ttk.Frame(container)
         right = ttk.Frame(container)
         container.add(left, weight=3)
         container.add(right, weight=4)
 
-        scan_controls = self._make_card(left, 'Image input')
-        scan_controls.pack(fill='x', pady=(0, 10))
-        row = ttk.Frame(scan_controls, style='Panel.TFrame')
-        row.pack(fill='x')
-        ttk.Button(row, text='Open image…', style='Accent.TButton', command=self.open_and_scan_image).pack(side='left')
-        ttk.Button(row, text='Rescan', command=self.rescan_last_image).pack(side='left', padx=(8, 0))
-        ttk.Button(row, text='Copy full JSON', command=lambda: self._copy_text_widget(self.scan_json_text)).pack(side='left', padx=(8, 0))
-        ttk.Button(row, text='Copy payload only', command=lambda: self._copy_text_widget(self.scan_payload_text)).pack(side='left', padx=(8, 0))
+        controls = self._make_card(left, 'Scan image')
+        controls.pack(fill='x', pady=(0, 10))
+        button_row = ttk.Frame(controls, style='Panel.TFrame')
+        button_row.pack(fill='x')
+        ttk.Button(button_row, text='Open image…', width=16, style='Accent.TButton', command=self.open_and_scan_image).pack(side='left')
+        ttk.Button(button_row, text='Rescan current', width=14, command=self.rescan_last_image).pack(side='left', padx=(8, 0))
+        ttk.Button(button_row, text='Copy payload', width=14, command=lambda: self._copy_text_widget(self.scan_payload_text)).pack(side='left', padx=(8, 0))
+        ttk.Button(button_row, text='Copy details', width=14, command=lambda: self._copy_text_widget(self.scan_json_text)).pack(side='left', padx=(8, 0))
         self.scan_path_var = tk.StringVar(value='No image selected')
-        ttk.Label(scan_controls, textvariable=self.scan_path_var, style='Muted.TLabel', wraplength=620).pack(anchor='w', pady=(10, 0))
+        ttk.Label(controls, textvariable=self.scan_path_var, style='Muted.TLabel', wraplength=440, justify='left').pack(anchor='w', pady=(10, 0))
 
-        preview_card = self._make_card(left, 'Scan preview')
+        preview_card = self._make_card(left, 'Preview')
         preview_card.pack(fill='both', expand=True)
-        self.scan_image_label = ttk.Label(preview_card)
-        self.scan_image_label.pack(fill='both', expand=True)
+        preview_card.rowconfigure(0, weight=1)
+        preview_card.columnconfigure(0, weight=1)
+        self.scan_image_label = tk.Label(preview_card, bg='#fbfcfe', bd=0, anchor='center', text='Open an image to preview the QR area.', fg=self.palette['muted'], font=('Segoe UI', 11))
+        self.scan_image_label.grid(row=0, column=0, sticky='nsew')
 
-        right_top = ttk.Frame(right)
-        right_top.pack(fill='x', pady=(0, 10))
-        self.scan_status_label = ttk.Label(right_top, text='Idle', foreground=STATUS_STYLES['idle'][1], font=('Segoe UI', 11, 'bold'))
+        self.scan_status_label = ttk.Label(right, text='Waiting for image', foreground=STATUS_STYLES['idle'][1], font=('Segoe UI', 15, 'bold'))
         self.scan_status_label.pack(anchor='w')
-        self.scan_status_hint = tk.StringVar(value='Open an image to decode and inspect payload structure.')
-        ttk.Label(right_top, textvariable=self.scan_status_hint, style='Muted.TLabel', wraplength=740).pack(anchor='w', pady=(4, 0))
+        self.scan_status_hint = tk.StringVar(value='Choose an image and the decoded payload will appear here.')
+        ttk.Label(right, textvariable=self.scan_status_hint, style='Muted.TLabel', wraplength=900, justify='left').pack(anchor='w', pady=(4, 10))
 
-        self.scan_metric_vars = self._new_metric_vars([
-            'Decoder', 'Stage', 'Scenario', 'Payload kind', 'Split progress', 'Brightness', 'Contrast', 'Sharpness', 'Operator hint'
-        ])
-        metric_card = self._make_card(right, 'Decoded summary')
+        self.scan_metric_vars = self._new_metric_vars(['Result', 'Decoder', 'Stage', 'Payload', 'Progress', 'Hint'])
+        metric_card = self._make_card(right, 'Scan summary')
         metric_card.pack(fill='x', pady=(0, 10))
         self._build_metric_grid(metric_card, self.scan_metric_vars, columns=3)
 
-        mid = ttk.PanedWindow(right, orient='horizontal')
-        mid.pack(fill='both', expand=True)
-        notes_card = self._make_card(mid, 'Notes and recovery log')
-        payload_card = self._make_card(mid, 'Normalized payload')
-        mid.add(notes_card, weight=2)
-        mid.add(payload_card, weight=3)
-        self.scan_notes_text = self.tk.Text(notes_card, wrap='word', font=('Consolas', 10), height=8, relief='flat', background='#fbfcfe')
-        self.scan_notes_text.pack(fill='both', expand=True)
-        self.scan_payload_text = self.tk.Text(payload_card, wrap='word', font=('Consolas', 10), height=8, relief='flat', background='#fbfcfe')
-        self.scan_payload_text.pack(fill='both', expand=True)
-
-        json_card, self.scan_json_text = self._build_json_panel(right, 'Full enhanced result JSON')
-        json_card.pack(fill='both', expand=True, pady=(10, 0))
+        info_card = self._make_card(right, 'Scan output')
+        info_card.pack(fill='both', expand=True)
+        self.scan_payload_text, self.scan_reason_text, self.scan_methods_text, self.scan_json_text = self._build_result_tabs(info_card)
 
     def _build_generate_tab(self) -> None:
         tk, ttk = self.tk, self.ttk
@@ -370,77 +621,86 @@ class DesktopConsole:
         ttk.Button(actions, text='Save preview', command=self.save_current_generated_preview).pack(side='left', padx=(8, 0))
         ttk.Button(actions, text='Copy payload JSON', command=lambda: self._copy_text_widget(self.payload_text)).pack(side='left', padx=(8, 0))
 
-        self.generate_status_label = ttk.Label(right, text='Idle', foreground=STATUS_STYLES['idle'][1], font=('Segoe UI', 11, 'bold'))
+        self.generate_status_label = ttk.Label(right, text='Ready to generate', foreground=STATUS_STYLES['idle'][1], font=('Segoe UI', 15, 'bold'))
         self.generate_status_label.pack(anchor='w')
-        self.generate_status_hint = tk.StringVar(value='Generate a QR to see preview, chunking, and encoding decisions.')
-        ttk.Label(right, textvariable=self.generate_status_hint, style='Muted.TLabel', wraplength=740).pack(anchor='w', pady=(4, 10))
+        self.generate_status_hint = tk.StringVar(value='Generate a QR and preview the final image or chunk set here.')
+        ttk.Label(right, textvariable=self.generate_status_hint, style='Muted.TLabel', wraplength=820).pack(anchor='w', pady=(4, 10))
 
         preview_card = self._make_card(right, 'Generated preview')
         preview_card.pack(fill='both', expand=True, pady=(0, 10))
         self.generated_label = ttk.Label(preview_card)
         self.generated_label.pack(fill='both', expand=True)
 
-        self.generate_metric_vars = self._new_metric_vars(['Mode', 'Codec', 'Payload bytes', 'Chunk count', 'Saved files', 'Preview summary'])
+        self.generate_metric_vars = self._new_metric_vars(['Result', 'Mode', 'Codec', 'Payload bytes', 'Chunk count', 'Saved files'])
         metric_card = self._make_card(right, 'Generation summary')
         metric_card.pack(fill='x', pady=(0, 10))
         self._build_metric_grid(metric_card, self.generate_metric_vars, columns=3)
 
-        log_card, self.generate_log = self._build_json_panel(right, 'Generation log')
-        log_card.pack(fill='both', expand=True)
+        lower = ttk.PanedWindow(right, orient='horizontal')
+        lower.pack(fill='both', expand=True)
+        methods_card = self._make_card(lower, 'Methods used and why')
+        log_card = self._make_card(lower, 'Generation log')
+        lower.add(methods_card, weight=2)
+        lower.add(log_card, weight=3)
+        self.generate_methods_text = self.tk.Text(methods_card, wrap='word', font=('Consolas', 10), height=10, relief='flat', background='#fbfcfe')
+        self.generate_methods_text.pack(fill='both', expand=True)
+        self.generate_log = self.tk.Text(log_card, wrap='word', font=('Consolas', 10), height=10, relief='flat', background='#fbfcfe')
+        self.generate_log.pack(fill='both', expand=True)
         self._set_text(self.generate_log, 'No QR generated yet.')
+        self._set_text(self.generate_methods_text, 'No method summary yet.')
 
     def _build_camera_tab(self) -> None:
         tk, ttk = self.tk, self.ttk
-        container = ttk.PanedWindow(self.camera_tab, orient='horizontal')
+        body = self._make_scrollable_body(self.camera_tab)
+        container = ttk.PanedWindow(body, orient='horizontal')
         container.pack(fill='both', expand=True)
         left = ttk.Frame(container)
         right = ttk.Frame(container)
         container.add(left, weight=3)
         container.add(right, weight=4)
 
-        controls = self._make_card(left, 'Camera controls')
+        controls = self._make_card(left, 'Camera')
         controls.pack(fill='x', pady=(0, 10))
-        row = ttk.Frame(controls, style='Panel.TFrame')
-        row.pack(fill='x')
-        ttk.Label(row, text='Device', style='Muted.TLabel').pack(side='left')
+        form = ttk.Frame(controls, style='Panel.TFrame')
+        form.pack(fill='x')
+        ttk.Label(form, text='Device', style='Muted.TLabel').grid(row=0, column=0, sticky='w')
         self.camera_device_var = tk.StringVar(value='0')
-        ttk.Entry(row, textvariable=self.camera_device_var, width=8).pack(side='left', padx=(10, 20))
-        ttk.Label(row, text='Private key', style='Muted.TLabel').pack(side='left')
+        ttk.Entry(form, textvariable=self.camera_device_var, width=10).grid(row=0, column=1, sticky='w', padx=(10, 18))
+        ttk.Label(form, text='Private key', style='Muted.TLabel').grid(row=1, column=0, sticky='w', pady=(10, 0))
         self.camera_private_key_var = tk.StringVar()
-        ttk.Entry(row, textvariable=self.camera_private_key_var, width=46).pack(side='left', padx=(10, 14))
-        ttk.Button(row, text='Start', style='Accent.TButton', command=self.start_camera).pack(side='left')
-        ttk.Button(row, text='Stop', command=self.stop_camera).pack(side='left', padx=(8, 0))
+        ttk.Entry(form, textvariable=self.camera_private_key_var).grid(row=1, column=1, columnspan=3, sticky='ew', padx=(10, 0), pady=(10, 0))
+        form.columnconfigure(3, weight=1)
 
-        self.camera_status_var = tk.StringVar(value='Camera stopped.')
-        ttk.Label(controls, textvariable=self.camera_status_var, style='Muted.TLabel', wraplength=620).pack(anchor='w', pady=(10, 0))
+        action_row = ttk.Frame(controls, style='Panel.TFrame')
+        action_row.pack(fill='x', pady=(10, 0))
+        ttk.Button(action_row, text='Start camera', width=16, style='Accent.TButton', command=self.start_camera).pack(side='left')
+        ttk.Button(action_row, text='Stop camera', width=16, command=self.stop_camera).pack(side='left', padx=(8, 0))
+        ttk.Button(action_row, text='Copy payload', width=14, command=lambda: self._copy_text_widget(self.camera_payload_text)).pack(side='left', padx=(8, 0))
+        ttk.Button(action_row, text='Copy details', width=14, command=lambda: self._copy_text_widget(self.camera_json_text)).pack(side='left', padx=(8, 0))
 
-        preview_card = self._make_card(left, 'Live frame preview')
+        self.camera_status_var = tk.StringVar(value='Camera stopped. Live decode now refreshes at a stable lower rate to keep the preview smooth.')
+        ttk.Label(controls, textvariable=self.camera_status_var, style='Muted.TLabel', wraplength=460, justify='left').pack(anchor='w', pady=(10, 0))
+
+        preview_card = self._make_card(left, 'Live preview')
         preview_card.pack(fill='both', expand=True)
-        self.camera_image_label = ttk.Label(preview_card)
-        self.camera_image_label.pack(fill='both', expand=True)
+        preview_card.rowconfigure(0, weight=1)
+        preview_card.columnconfigure(0, weight=1)
+        self.camera_image_label = tk.Label(preview_card, bg='#fbfcfe', bd=0, anchor='center', text='Start the camera to see the live preview.', fg=self.palette['muted'], font=('Segoe UI', 11))
+        self.camera_image_label.grid(row=0, column=0, sticky='nsew')
 
-        self.camera_status_label = ttk.Label(right, text='Idle', foreground=STATUS_STYLES['idle'][1], font=('Segoe UI', 11, 'bold'))
+        self.camera_status_label = ttk.Label(right, text='Camera stopped', foreground=STATUS_STYLES['idle'][1], font=('Segoe UI', 15, 'bold'))
         self.camera_status_label.pack(anchor='w')
-        self.camera_status_hint = tk.StringVar(value='Start the camera to inspect live decoding, ROI tracking, and split chunk collection.')
-        ttk.Label(right, textvariable=self.camera_status_hint, style='Muted.TLabel', wraplength=740).pack(anchor='w', pady=(4, 10))
+        self.camera_status_hint = tk.StringVar(value='The latest decoded payload will appear here during live scanning.')
+        ttk.Label(right, textvariable=self.camera_status_hint, style='Muted.TLabel', wraplength=900, justify='left').pack(anchor='w', pady=(4, 10))
 
-        self.camera_metric_vars = self._new_metric_vars([
-            'Frames', 'Successes', 'Partial', 'Fails', 'Decoder', 'Stage', 'Scenario', 'Split progress', 'Calibration'
-        ])
-        camera_metrics_card = self._make_card(right, 'Live metrics')
+        self.camera_metric_vars = self._new_metric_vars(['Result', 'Frames', 'Hits', 'Misses', 'Decoder', 'Stage', 'Payload', 'Progress'])
+        camera_metrics_card = self._make_card(right, 'Live summary')
         camera_metrics_card.pack(fill='x', pady=(0, 10))
-        self._build_metric_grid(camera_metrics_card, self.camera_metric_vars, columns=3)
+        self._build_metric_grid(camera_metrics_card, self.camera_metric_vars, columns=4)
 
-        mid = ttk.PanedWindow(right, orient='horizontal')
-        mid.pack(fill='both', expand=True)
-        notes_card = self._make_card(mid, 'Live notes')
-        raw_card = self._make_card(mid, 'Latest result JSON')
-        mid.add(notes_card, weight=2)
-        mid.add(raw_card, weight=3)
-        self.camera_notes_text = tk.Text(notes_card, wrap='word', font=('Consolas', 10), relief='flat', background='#fbfcfe')
-        self.camera_notes_text.pack(fill='both', expand=True)
-        self.camera_json_text = tk.Text(raw_card, wrap='word', font=('Consolas', 10), relief='flat', background='#fbfcfe')
-        self.camera_json_text.pack(fill='both', expand=True)
+        info_card = self._make_card(right, 'Live decode output')
+        info_card.pack(fill='both', expand=True)
+        self.camera_payload_text, self.camera_reason_text, self.camera_methods_text, self.camera_json_text = self._build_result_tabs(info_card)
 
     def _build_dataset_tab(self) -> None:
         tk, ttk = self.tk, self.ttk
@@ -510,49 +770,48 @@ class DesktopConsole:
         base = result_dict.get('base_result') or {}
         payload = (base.get('parsed_payload') or {})
         quality = (base.get('quality') or {})
-        notes = result_dict.get('notes') or []
-        hint = quality.get('operator_hint') or '—'
         status = 'idle'
+        verdict = _status_word(result_dict)
         hint_text = 'No result yet.'
         if result_dict.get('success'):
             status = 'success'
-            hint_text = 'Final payload assembled and ready for inspection.'
+            hint_text = 'Payload decoded successfully.'
         elif result_dict.get('partial_success'):
             status = 'partial'
-            hint_text = 'A split chunk was captured; more pieces are still needed.'
+            hint_text = 'One chunk was captured, but the full payload is not complete yet.'
         elif result_dict.get('error'):
             status = 'error'
             hint_text = result_dict.get('error') or 'Decode failed.'
         metrics = {
+            'Result': verdict,
             'Decoder': base.get('decoder') or '—',
             'Stage': result_dict.get('enhancement_stage') or base.get('stage') or '—',
-            'Scenario': result_dict.get('scenario') or '—',
-            'Payload kind': payload.get('payload_kind') or '—',
-            'Split progress': result_dict.get('split_progress') or '—',
-            'Brightness': f"{quality.get('mean_brightness', 0):.1f}" if quality.get('mean_brightness') is not None else '—',
-            'Contrast': f"{quality.get('contrast_stddev', 0):.1f}" if quality.get('contrast_stddev') is not None else '—',
-            'Sharpness': f"{quality.get('laplacian_variance', 0):.1f}" if quality.get('laplacian_variance') is not None else '—',
-            'Operator hint': hint,
+            'Payload': payload.get('payload_kind') or '—',
+            'Progress': result_dict.get('split_progress') or '—',
+            'Hint': quality.get('operator_hint') or hint_text,
         }
-        notes_text = '\n'.join(f'• {note}' for note in notes) if notes else 'No notes.'
-        payload_text = _pretty_json(payload.get('normalized') or payload or {})
-        raw_text = _pretty_json(result_dict)
-        return status, metrics, notes_text, payload_text, raw_text
+        methods_text, reason_text = _method_explanation(result_dict)
+        return status, metrics, self._payload_display_text(result_dict), self._compact_result_json(result_dict), methods_text, reason_text
 
     def _reset_scan_view(self) -> None:
-        self._set_status_label(self.scan_status_label, 'idle', self.scan_status_hint, 'Open an image to decode and inspect payload structure.')
+        self.scan_status_label.configure(text='Waiting for image', foreground=STATUS_STYLES['idle'][1])
+        self.scan_status_hint.set('Choose an image and the decoded payload will appear here.')
         for var in self.scan_metric_vars.values():
             var.set('—')
-        self._set_text(self.scan_notes_text, 'No notes yet.')
-        self._set_text(self.scan_payload_text, '{}')
-        self._set_text(self.scan_json_text, 'Choose an image to decode QR payloads and inspect enhanced pipeline output here.')
+        self._set_text(self.scan_payload_text, 'Decoded payload will appear here after a successful scan.')
+        self._set_text(self.scan_reason_text, 'Why the result happened will appear here.')
+        self._set_text(self.scan_methods_text, 'The method trace will appear here.')
+        self._set_text(self.scan_json_text, 'Compact technical details will appear here after a scan.')
 
     def _reset_camera_view(self) -> None:
-        self._set_status_label(self.camera_status_label, 'idle', self.camera_status_hint, 'Start the camera to inspect live decoding, ROI tracking, and split chunk collection.')
+        self.camera_status_label.configure(text='Camera stopped', foreground=STATUS_STYLES['idle'][1])
+        self.camera_status_hint.set('Start the camera and the latest decoded payload will appear here.')
         for var in self.camera_metric_vars.values():
             var.set('—')
-        self._set_text(self.camera_notes_text, 'No camera notes yet.')
-        self._set_text(self.camera_json_text, 'Start the camera to see live results.')
+        self._set_text(self.camera_payload_text, 'Live decoded payload will appear here.')
+        self._set_text(self.camera_reason_text, 'Why the latest result happened will appear here.')
+        self._set_text(self.camera_methods_text, 'The method trace for the latest result will appear here.')
+        self._set_text(self.camera_json_text, 'Compact technical details will appear here during live scanning.')
 
     def load_selected_template(self) -> None:
         payload = PAYLOAD_TEMPLATES.get(self.template_var.get(), PAYLOAD_TEMPLATES['Wi-Fi onboarding'])
@@ -615,14 +874,27 @@ class DesktopConsole:
             log_text = _pretty_json(log_payload)
             self.generated_preview = GeneratedPreview(preview, log_text, saved_paths)
             self._display_pil_image(self.generated_label, preview, 'current_photo', (720, 720))
+            method_lines = [
+                '• Result: SUCCESS.',
+                f"• Payload codec used: {codec.upper()}.",
+                f"• Transport mode: {'split QR sequence' if self.split_var.get() else 'single QR image'}.",
+                f"• Encryption: {'enabled' if self.encrypted_var.get() else 'disabled'}.",
+                f"• Compatibility armor: {'enabled' if used_text_armor else 'not used'}.",
+            ]
+            if self.split_var.get():
+                method_lines.append('• Split transport was chosen to reduce per-symbol density and improve robustness for larger payloads.')
+                method_lines.append(f"• Parity recovery is {'enabled' if self.parity_var.get() else 'disabled'}, so one missing chunk {'can' if self.parity_var.get() else 'cannot'} be reconstructed during assembly.")
+            else:
+                method_lines.append('• Single-QR transport was sufficient because the payload fit into one symbol under the selected encoding settings.')
             self._set_text(self.generate_log, log_text)
+            self._set_text(self.generate_methods_text, '\n'.join(method_lines))
+            self.generate_metric_vars['Result'].set('SUCCESS')
             self.generate_metric_vars['Mode'].set(mode)
             self.generate_metric_vars['Codec'].set(codec)
             self.generate_metric_vars['Payload bytes'].set(str(len(raw)))
             self.generate_metric_vars['Chunk count'].set(chunk_count)
             self.generate_metric_vars['Saved files'].set(str(len(saved_paths)))
-            self.generate_metric_vars['Preview summary'].set(payload_preview[:64] + ('…' if len(payload_preview) > 64 else ''))
-            self._set_status_label(self.generate_status_label, 'success', self.generate_status_hint, 'QR assets generated successfully. Save the preview or use the PNG files for demos.')
+            self._set_status_label(self.generate_status_label, 'success', self.generate_status_hint, 'SUCCESS · QR assets generated successfully. Save the preview or use the PNG files for demos.')
             self.hero_status.set(f'Generated {mode.lower()} using {codec.upper()} encoding.')
         except Exception as exc:
             self._set_status_label(self.generate_status_label, 'error', self.generate_status_hint, f'QR generation failed: {exc}')
@@ -630,10 +902,16 @@ class DesktopConsole:
             self.hero_status.set('Generation failed. Fix the payload or options and try again.')
 
     def _display_pil_image(self, label, image: Image.Image, attr_name: str, max_size: tuple[int, int]) -> None:
-        preview = _resize_for_preview(image, max_size)
+        label.update_idletasks()
+        width = label.winfo_width()
+        height = label.winfo_height()
+        dynamic_size = (max_size[0], max_size[1])
+        if width > 80 and height > 80:
+            dynamic_size = (max(width - 12, 220), max(height - 12, 220))
+        preview = _resize_for_preview(image, dynamic_size)
         photo = ImageTk.PhotoImage(preview)
         setattr(self, attr_name, photo)
-        label.configure(image=photo)
+        label.configure(image=photo, text='')
 
     def save_current_generated_preview(self) -> None:
         if self.generated_preview is None:
@@ -686,15 +964,20 @@ class DesktopConsole:
             cv2.polylines(display, [pts], True, (26, 115, 232), 3)
         preview = Image.fromarray(cv2.cvtColor(display, cv2.COLOR_BGR2RGB))
         self._display_pil_image(self.scan_image_label, preview, 'current_scan_photo', (720, 720))
-        status, metrics, notes_text, payload_text, raw_text = self._result_summary(result_dict)
-        self._set_status_label(self.scan_status_label, status, self.scan_status_hint, metrics.get('Operator hint', 'Scan complete.'))
+        status, metrics, payload_text, raw_text, methods_text, reason_text = self._result_summary(result_dict)
+        self.last_scan_result = result_dict
+        hint = metrics.get('Hint', 'Scan complete.')
+        title_map = {'success': 'Decoded successfully', 'partial': 'Partial live result', 'error': 'No payload decoded', 'idle': 'Waiting for image'}
+        self.scan_status_label.configure(text=title_map.get(status, 'Scan result'), foreground=STATUS_STYLES.get(status, STATUS_STYLES['idle'])[1])
+        self.scan_status_hint.set(hint)
         for key, var in self.scan_metric_vars.items():
             var.set(metrics.get(key, '—'))
-        self._set_text(self.scan_notes_text, notes_text)
         self._set_text(self.scan_payload_text, payload_text)
+        self._set_text(self.scan_reason_text, reason_text)
+        self._set_text(self.scan_methods_text, methods_text)
         self._set_text(self.scan_json_text, raw_text)
-        self.hero_status.set(f'Scanned {path.name}.')
-        self.hero_stats.set(json.dumps(self.system.pipeline_stats_summary(), ensure_ascii=False)[:180] + '…')
+        self.hero_status.set(f"Scanned {path.name} · {metrics.get('Result', '—')}")
+        self.hero_stats.set(self._pipeline_summary_line())
 
     def start_camera(self) -> None:
         if self.camera_running:
@@ -703,14 +986,16 @@ class DesktopConsole:
             device_value = self.camera_device_var.get().strip()
             device: int | str = int(device_value) if device_value.isdigit() else device_value
             self.system = EnhancedQRSystem(private_key=self.camera_private_key_var.get().strip() or None, stats_path='pipeline_stats.json')
-            self.camera_source = LinuxCameraSource(device=device, width=1280, height=720, fps=30)
+            self.camera_source = LinuxCameraSource(device=device, width=960, height=540, fps=24)
             self.camera_source.open()
             self.camera_running = True
             self.camera_counters = {'frames': 0, 'success': 0, 'partial': 0, 'fail': 0}
-            self.camera_status_var.set(f'Camera running on device {self.camera_source.device} ({self.camera_source.backend_name or "auto"}).')
+            self.camera_status_var.set(f'Camera running on device {self.camera_source.device} ({self.camera_source.backend_name or "auto"}). Live decode is intentionally throttled to keep the preview smoother.')
             self.camera_thread = threading.Thread(target=self._camera_loop, daemon=True)
             self.camera_thread.start()
             self.hero_status.set('Camera stream started.')
+            self.last_camera_result = None
+            self.last_camera_signature = ''
         except Exception as exc:
             self.camera_running = False
             self.camera_source = None
@@ -725,50 +1010,85 @@ class DesktopConsole:
             except Exception:
                 pass
         self.camera_source = None
-        self.camera_status_var.set('Camera stopped.')
+        self.camera_status_var.set('Camera stopped. You can restart it at any time.')
+        self.camera_status_label.configure(text='Camera stopped', foreground=STATUS_STYLES['idle'][1])
+        self.camera_status_hint.set('Start the camera and the latest decoded payload will appear here.')
         self.hero_status.set('Camera stream stopped.')
 
     def _camera_loop(self) -> None:
+        last_preview_push = 0.0
+        last_decode_time = 0.0
+        last_text_push = 0.0
+        latest_result_dict: dict[str, Any] | None = None
+        latest_display: np.ndarray | None = None
         while self.camera_running and self.camera_source is not None:
             try:
                 frame, decision = self.camera_source.read_adaptive()
-                result = self.system.scan_stream_frame(frame, None if decision is None else decision.to_dict())
-                self.camera_counters['frames'] += 1
-                if result.success:
-                    self.camera_counters['success'] += 1
-                elif result.partial_success:
-                    self.camera_counters['partial'] += 1
+                now = time.monotonic()
+                should_decode = (now - last_decode_time) >= self.camera_decode_interval_s or latest_result_dict is None
+                refresh_text = False
+                if should_decode:
+                    result = self.system.scan_stream_frame(frame, None if decision is None else decision.to_dict())
+                    latest_result_dict = result.to_dict()
+                    last_decode_time = now
+                    self.camera_counters['frames'] += 1
+                    if result.success:
+                        self.camera_counters['success'] += 1
+                    elif result.partial_success:
+                        self.camera_counters['partial'] += 1
+                    else:
+                        self.camera_counters['fail'] += 1
+                    signature = json.dumps({
+                        'success': latest_result_dict.get('success'),
+                        'partial_success': latest_result_dict.get('partial_success'),
+                        'error': latest_result_dict.get('error'),
+                        'decoded_text': ((latest_result_dict.get('base_result') or {}).get('decoded_text')),
+                        'stage': latest_result_dict.get('enhancement_stage') or ((latest_result_dict.get('base_result') or {}).get('stage')),
+                        'split_progress': latest_result_dict.get('split_progress'),
+                    }, ensure_ascii=False, sort_keys=True)
+                    refresh_text = result.success or result.partial_success or signature != self.last_camera_signature or (now - last_text_push) >= self.camera_text_refresh_interval_s
+                    if refresh_text:
+                        self.last_camera_signature = signature
+                        last_text_push = now
+                    display = frame.copy()
+                    if result.base_result and result.base_result.polygon:
+                        pts = np.asarray(result.base_result.polygon, dtype=np.int32).reshape((-1, 1, 2))
+                        cv2.polylines(display, [pts], True, (0, 180, 0), 2)
+                    latest_display = display
                 else:
-                    self.camera_counters['fail'] += 1
-                display = frame.copy()
-                if result.base_result and result.base_result.polygon:
-                    pts = np.asarray(result.base_result.polygon, dtype=np.int32).reshape((-1, 1, 2))
-                    cv2.polylines(display, [pts], True, (0, 180, 0), 2)
-                self.root.after(0, self._update_camera_preview, display, result.to_dict())
+                    latest_display = frame
+                if latest_display is not None and latest_result_dict is not None and (now - last_preview_push) >= self.camera_preview_interval_s:
+                    self.root.after(0, self._update_camera_preview, latest_display, latest_result_dict, refresh_text)
+                    last_preview_push = now
             except Exception as exc:
                 self.root.after(0, self.camera_status_var.set, f'Camera error: {exc}')
                 self.root.after(0, self.stop_camera)
                 break
-            time.sleep(0.01)
+            time.sleep(0.005)
 
-    def _update_camera_preview(self, frame: np.ndarray, result_dict: dict[str, Any]) -> None:
+    def _update_camera_preview(self, frame: np.ndarray, result_dict: dict[str, Any], refresh_text: bool = True) -> None:
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         self._display_pil_image(self.camera_image_label, Image.fromarray(rgb), 'current_camera_photo', (720, 720))
-        status, metrics, notes_text, _payload_text, raw_text = self._result_summary(result_dict)
-        calibration = self.system.calibration_status()
+        status, metrics, payload_text, raw_text, methods_text, reason_text = self._result_summary(result_dict)
+        self.last_camera_result = result_dict
+        self.camera_metric_vars['Result'].set(metrics.get('Result', '—'))
         self.camera_metric_vars['Frames'].set(str(self.camera_counters['frames']))
-        self.camera_metric_vars['Successes'].set(str(self.camera_counters['success']))
-        self.camera_metric_vars['Partial'].set(str(self.camera_counters['partial']))
-        self.camera_metric_vars['Fails'].set(str(self.camera_counters['fail']))
+        hits = self.camera_counters['success'] + self.camera_counters['partial']
+        self.camera_metric_vars['Hits'].set(str(hits))
+        self.camera_metric_vars['Misses'].set(str(self.camera_counters['fail']))
         self.camera_metric_vars['Decoder'].set(metrics.get('Decoder', '—'))
         self.camera_metric_vars['Stage'].set(metrics.get('Stage', '—'))
-        self.camera_metric_vars['Scenario'].set(metrics.get('Scenario', '—'))
-        self.camera_metric_vars['Split progress'].set(metrics.get('Split progress', '—'))
-        self.camera_metric_vars['Calibration'].set('ready' if calibration.get('is_calibrated') else f"{calibration.get('frames_seen', 0)}/{calibration.get('warmup_frames', 0)}")
-        self._set_status_label(self.camera_status_label, status, self.camera_status_hint, metrics.get('Operator hint', 'Live decode updated.'))
-        self._set_text(self.camera_notes_text, notes_text)
-        self._set_text(self.camera_json_text, raw_text)
-        self.hero_stats.set(json.dumps(self.system.pipeline_stats_summary(), ensure_ascii=False)[:180] + '…')
+        self.camera_metric_vars['Payload'].set(metrics.get('Payload', '—'))
+        self.camera_metric_vars['Progress'].set(metrics.get('Progress', '—'))
+        title_map = {'success': 'Live decode success', 'partial': 'Chunk captured', 'error': 'No payload decoded', 'idle': 'Camera waiting'}
+        self.camera_status_label.configure(text=title_map.get(status, 'Live decode'), foreground=STATUS_STYLES.get(status, STATUS_STYLES['idle'])[1])
+        self.camera_status_hint.set(metrics.get('Hint', 'Live decode updated.'))
+        if refresh_text:
+            self._set_text(self.camera_payload_text, payload_text)
+            self._set_text(self.camera_reason_text, reason_text)
+            self._set_text(self.camera_methods_text, methods_text)
+            self._set_text(self.camera_json_text, raw_text)
+        self.hero_stats.set(self._pipeline_summary_line())
 
     def choose_dataset_folder(self) -> None:
         from tkinter import filedialog

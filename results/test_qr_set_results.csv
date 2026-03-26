@@ -1,0 +1,25 @@
+file,success,decoder,stage,payload_kind,hint,decode_ms,error
+assets\test_qr_set\cbor_v1_H.png,True,opencv-qrcode,direct_opencv,cbor-v1,frame quality is acceptable,143.5,
+assets\test_qr_set\cbor_v1_L.png,True,opencv-qrcode,direct_opencv,cbor-v1,frame quality is acceptable,61.54,
+assets\test_qr_set\cbor_v1_M.png,True,opencv-qrcode,direct_opencv,cbor-v1,frame quality is acceptable,80.77,
+assets\test_qr_set\cbor_v1_Q.png,True,opencv-qrcode,direct_opencv,cbor-v1,frame quality is acceptable,103.9,
+assets\test_qr_set\json_v1_H.png,True,pyzbar/zbar,direct,json-v1,frame quality is acceptable,319.59,
+assets\test_qr_set\json_v1_L.png,True,pyzbar/zbar,direct,json-v1,frame quality is acceptable,132.16,
+assets\test_qr_set\json_v1_M.png,True,pyzbar/zbar,direct,json-v1,frame quality is acceptable,128.18,
+assets\test_qr_set\json_v1_Q.png,True,pyzbar/zbar,direct,json-v1,frame quality is acceptable,197.72,
+assets\test_qr_set\secure_bootstrap_uri_H.png,True,pyzbar/zbar,direct,secure-bootstrap-uri,frame quality is acceptable,158.28,
+assets\test_qr_set\secure_bootstrap_uri_L.png,True,pyzbar/zbar,direct,secure-bootstrap-uri,frame quality is acceptable,83.34,
+assets\test_qr_set\secure_bootstrap_uri_M.png,True,pyzbar/zbar,direct,secure-bootstrap-uri,frame quality is acceptable,92.32,
+assets\test_qr_set\secure_bootstrap_uri_Q.png,True,pyzbar/zbar,direct,secure-bootstrap-uri,frame quality is acceptable,139.08,
+assets\test_qr_set\wifi_direct_H.png,True,pyzbar/zbar,direct,wifi-direct,frame quality is acceptable,100.51,
+assets\test_qr_set\wifi_direct_L.png,True,pyzbar/zbar,direct,wifi-direct,frame quality is acceptable,65.83,
+assets\test_qr_set\wifi_direct_M.png,True,pyzbar/zbar,direct,wifi-direct,frame quality is acceptable,61.12,
+assets\test_qr_set\wifi_direct_Q.png,True,pyzbar/zbar,direct,wifi-direct,frame quality is acceptable,72.42,
+assets\test_qr_set\x25519_cbor_v1_H.png,False,,,,frame quality is acceptable,4376.84,No QR payload could be decoded
+assets\test_qr_set\x25519_cbor_v1_L.png,False,,,,frame quality is acceptable,2244.64,No QR payload could be decoded
+assets\test_qr_set\x25519_cbor_v1_M.png,False,,,,frame quality is acceptable,3523.59,No QR payload could be decoded
+assets\test_qr_set\x25519_cbor_v1_Q.png,False,,,,frame quality is acceptable,4992.02,No QR payload could be decoded
+assets\test_qr_set\x25519_json_v1_H.png,False,,,,move camera slightly farther away,24832.2,No QR payload could be decoded
+assets\test_qr_set\x25519_json_v1_L.png,False,,,,frame quality is acceptable,15089.76,No QR payload could be decoded
+assets\test_qr_set\x25519_json_v1_M.png,False,,,,frame quality is acceptable,15575.89,No QR payload could be decoded
+assets\test_qr_set\x25519_json_v1_Q.png,False,,,,frame quality is acceptable,20820.71,No QR payload could be decoded

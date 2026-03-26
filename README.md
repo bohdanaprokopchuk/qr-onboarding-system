@@ -383,6 +383,11 @@ python -m qr_onboarding.cli batch ./assets/datasets --pattern "**/*.png" --csv .
 run_desktop_console.bat
 ```
 
+Для PowerShell краще написати так:
+```
+.\run_desktop_console.bat
+```
+
 Expected result:
 
 - the CLI should execute without import errors
@@ -499,7 +504,7 @@ This improves reproducibility and supports both academic demonstration and engin
 
 ---
 
-## Academic Relevance
+## Relevance
 
 This project demonstrates not only a working QR decoding system, but also a structured experimental framework for evaluating robustness under difficult real-world conditions. The repository combines implementation, modular architecture, testing, and evaluation utilities in a way that supports both practical demonstration and comparative analysis.
 
