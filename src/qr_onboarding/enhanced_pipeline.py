@@ -15,7 +15,7 @@ from .multi_frame import MultiFrameBuffer
 from .payload_codecs import PayloadError, classify_text_payload, decode_versioned_payload
 from .pipeline import QRReader
 from .pipeline_stats import PipelineStatsCollector
-from .preprocessing import build_candidates, evaluate_quality, screen_artifact_score
+from .preprocessing import PreprocessCandidate, build_candidates, evaluate_quality, screen_artifact_score
 from .provisioning import ProvisioningManager
 from .roi_tracking import QRROITracker
 from .split_qr import SplitQRAssembler
@@ -55,14 +55,14 @@ class EnhancedScanResult:
 
 class OnlinePipelineSelector:
     STATIC_PRIORITY: dict[str, list[str]] = {
-        'screen_capture': ['watermark_suppressed', 'screen_clean', 'screen_sharp', 'screen_proposed_integral', 'watermark_proposed_integral', 'dynamic_equalized', 'clahe_sharp'],
-        'low_light': ['proposed_integral', 'dynamic_equalized', 'clahe', 'clahe_sharp', 'adaptive', 'yao', 'adaptive_sharp', 'upscaled'],
-        'motion_or_defocus': ['median', 'sharp', 'screen_sharp', 'clahe_sharp', 'proposed_integral', 'upscaled'],
-        'small_qr': ['upscaled', 'upscaled_adaptive', 'screen_proposed_integral', 'proposed_integral', 'clahe_sharp', 'adaptive'],
-        'oversized_qr': ['gray', 'sharp', 'otsu', 'clahe', 'rectified', 'rectified_clahe', 'rectified_proposed_integral'],
-        'glare_or_low_contrast': ['watermark_suppressed', 'screen_clean', 'dynamic_equalized', 'clahe_sharp', 'otsu', 'proposed_integral'],
-        'distance_or_soft_focus': ['upscaled', 'upscaled_adaptive', 'screen_proposed_integral', 'median', 'clahe_sharp', 'proposed_integral'],
-        'balanced': ['gray', 'proposed_integral', 'watermark_suppressed', 'clahe_sharp', 'adaptive', 'upscaled'],
+        'screen_capture': ['watermark_suppressed', 'screen_clean', 'screen_sharp', 'screen_proposed_integral', 'watermark_proposed_integral', 'detail_preserved', 'dynamic_equalized', 'clahe_sharp'],
+        'low_light': ['gamma_sharp', 'gamma_boost', 'proposed_integral', 'dynamic_equalized', 'detail_preserved', 'clahe_sharp', 'adaptive', 'yao', 'adaptive_sharp', 'upscaled'],
+        'motion_or_defocus': ['detail_preserved', 'median', 'sharp', 'screen_sharp', 'clahe_sharp', 'proposed_integral', 'upscaled'],
+        'small_qr': ['upscaled', 'upscaled_adaptive', 'detail_preserved', 'screen_proposed_integral', 'proposed_integral', 'gamma_sharp', 'clahe_sharp', 'adaptive'],
+        'oversized_qr': ['gray', 'sharp', 'otsu', 'clahe', 'rectified', 'rectified_clahe', 'rectified_detail_preserved', 'rectified_proposed_integral'],
+        'glare_or_low_contrast': ['glare_compensated', 'glare_proposed_integral', 'watermark_suppressed', 'screen_clean', 'dynamic_equalized', 'detail_preserved', 'clahe_sharp', 'otsu', 'proposed_integral'],
+        'distance_or_soft_focus': ['upscaled', 'upscaled_adaptive', 'detail_preserved', 'screen_proposed_integral', 'median', 'clahe_sharp', 'proposed_integral'],
+        'balanced': ['gray', 'detail_preserved', 'proposed_integral', 'watermark_suppressed', 'clahe_sharp', 'adaptive', 'upscaled'],
     }
 
     def __init__(self, reader: QRReader, stats: PipelineStatsCollector) -> None:
@@ -102,21 +102,21 @@ class OnlinePipelineSelector:
             notes.append('using calibrated thresholds')
         return scenario, notes, points, quality
 
-    def candidate_order(self, image: np.ndarray, scenario: str, points: Any | None) -> list[tuple[str, np.ndarray]]:
+    def candidate_order(self, image: np.ndarray, scenario: str, points: Any | None) -> list[PreprocessCandidate]:
         candidates = build_candidates(image, points)
         static_order = self.STATIC_PRIORITY.get(scenario, self.STATIC_PRIORITY['balanced'])
         names = self.stats.top_stages(scenario, fallback=static_order)
-        ordered: list[tuple[str, np.ndarray]] = []
+        ordered: list[PreprocessCandidate] = []
         seen: set[str] = set()
         for target in names:
-            for name, candidate in candidates:
-                if name == target and name not in seen:
-                    ordered.append((name, candidate))
-                    seen.add(name)
-        for name, candidate in candidates:
-            if name not in seen:
-                ordered.append((name, candidate))
-                seen.add(name)
+            for candidate in candidates:
+                if candidate.name == target and candidate.name not in seen:
+                    ordered.append(candidate)
+                    seen.add(candidate.name)
+        for candidate in candidates:
+            if candidate.name not in seen:
+                ordered.append(candidate)
+                seen.add(candidate.name)
         return ordered
 
 
@@ -275,10 +275,13 @@ class EnhancedQRSystem:
         points: Any | None = None,
     ) -> EnhancedScanResult:
         attempts: list[str] = []
-        for name, candidate in self.selector.candidate_order(image, scenario, points):
-            stage_input = candidate if candidate.ndim == 3 else cv2.cvtColor(candidate, cv2.COLOR_GRAY2BGR)
+        for candidate in self.selector.candidate_order(image, scenario, points):
+            name = candidate.name
+            stage_input = candidate.image if candidate.image.ndim == 3 else cv2.cvtColor(candidate.image, cv2.COLOR_GRAY2BGR)
             t0 = perf_counter()
             trial = self.reader.scan_image_direct(stage_input)
+            if trial.polygon is not None:
+                trial.polygon = candidate.remap_polygon(trial.polygon)
             elapsed_ms = (perf_counter() - t0) * 1000.0
             attempts.append(name)
             if trial.success:

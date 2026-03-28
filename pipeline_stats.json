@@ -1,0 +1,105 @@
+{
+  "adapt_after": 15,
+  "stats": {
+    "distance_or_soft_focus": {
+      "wins": {},
+      "stage_stats": {},
+      "total_decoded": 0,
+      "total_failed": 10,
+      "success_rate": 0.0
+    },
+    "balanced": {
+      "wins": {
+        "adaptive": 9,
+        "median": 1
+      },
+      "stage_stats": {
+        "adaptive": {
+          "wins": 9,
+          "total_latency_ms": 429.0498,
+          "avg_latency_ms": 47.6722
+        },
+        "median": {
+          "wins": 1,
+          "total_latency_ms": 26.2136,
+          "avg_latency_ms": 26.2136
+        }
+      },
+      "total_decoded": 10,
+      "total_failed": 2,
+      "success_rate": 0.8333
+    },
+    "motion_or_defocus": {
+      "wins": {
+        "direct": 1
+      },
+      "stage_stats": {
+        "direct": {
+          "wins": 1,
+          "total_latency_ms": 25.2978,
+          "avg_latency_ms": 25.2978
+        }
+      },
+      "total_decoded": 1,
+      "total_failed": 12,
+      "success_rate": 0.0769
+    },
+    "small_qr": {
+      "wins": {
+        "adaptive": 3,
+        "upscaled_adaptive": 5
+      },
+      "stage_stats": {
+        "adaptive": {
+          "wins": 3,
+          "total_latency_ms": 121.4355,
+          "avg_latency_ms": 40.4785
+        },
+        "upscaled_adaptive": {
+          "wins": 5,
+          "total_latency_ms": 256.5492,
+          "avg_latency_ms": 51.3098
+        }
+      },
+      "total_decoded": 8,
+      "total_failed": 0,
+      "success_rate": 1.0
+    },
+    "low_light": {
+      "wins": {
+        "adaptive": 16,
+        "direct": 76
+      },
+      "stage_stats": {
+        "adaptive": {
+          "wins": 16,
+          "total_latency_ms": 480.1605,
+          "avg_latency_ms": 30.01
+        },
+        "direct": {
+          "wins": 76,
+          "total_latency_ms": 2119.5458,
+          "avg_latency_ms": 27.8888
+        }
+      },
+      "total_decoded": 92,
+      "total_failed": 0,
+      "success_rate": 1.0
+    },
+    "oversized_qr": {
+      "wins": {
+        "direct": 1
+      },
+      "stage_stats": {
+        "direct": {
+          "wins": 1,
+          "total_latency_ms": 27.1548,
+          "avg_latency_ms": 27.1548
+        }
+      },
+      "total_decoded": 1,
+      "total_failed": 0,
+      "success_rate": 1.0
+    }
+  }
+}

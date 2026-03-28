@@ -10,7 +10,7 @@ import numpy as np
 
 from .models import DecodeAttempt, ScanResult
 from .payload_codecs import PayloadError, classify_text_payload, decode_versioned_payload
-from .preprocessing import build_candidates, evaluate_quality
+from .preprocessing import PreprocessCandidate, build_candidates, evaluate_quality
 from .qr_decoder import OpenCVQRLocator, RawDecode, ZBarRecognizer
 
 
@@ -30,6 +30,14 @@ class QRReader:
         self.zbar = ZBarRecognizer()
         self.locator = OpenCVQRLocator()
 
+
+
+    @staticmethod
+    def _remap_candidate_polygon(raw: RawDecode, candidate: PreprocessCandidate) -> RawDecode:
+        if raw.polygon is not None:
+            raw.polygon = candidate.remap_polygon(raw.polygon)
+        return raw
+
     def scan_image_direct(self, image: np.ndarray) -> ScanResult:
         attempts: list[DecodeAttempt] = []
         points = self.locator.detect(image)
@@ -47,9 +55,10 @@ class QRReader:
         attempts = list(direct.attempts)
         points = self.locator.detect(image)
         quality = evaluate_quality(image, points)
-        for stage, candidate in build_candidates(image, points):
-            for raw in self._candidate_decoders(candidate, stage_prefix=stage):
-                result = self._try_build_success_result(raw, attempts, quality)
+        for candidate in build_candidates(image, points):
+            stage_input = candidate.image
+            for raw in self._candidate_decoders(stage_input, stage_prefix=candidate.name):
+                result = self._try_build_success_result(self._remap_candidate_polygon(raw, candidate), attempts, quality)
                 if result is not None:
                     return result
         return ScanResult(success=False, attempts=attempts, quality=quality, error='No QR payload could be decoded')

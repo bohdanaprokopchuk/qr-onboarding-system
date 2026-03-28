@@ -1,12 +1,37 @@
 from __future__ import annotations
 
-from typing import Optional
+from dataclasses import dataclass
+from typing import Any, Optional
 
 import cv2
 import numpy as np
 
 from .binarization import di_threshold, niblack_threshold, otsu_threshold, proposed_integral_threshold, yao_threshold
 from .models import FrameQualityMetrics
+
+
+@dataclass
+class PreprocessCandidate:
+    name: str
+    image: np.ndarray
+    scale_x: float = 1.0
+    scale_y: float = 1.0
+    inverse_perspective: Optional[np.ndarray] = None
+
+    def remap_polygon(self, polygon: Any) -> list[tuple[int, int]] | None:
+        if polygon is None:
+            return None
+        arr = np.asarray(polygon, dtype=np.float32).reshape(-1, 2)
+        if arr.shape[0] < 4:
+            return None
+        if self.inverse_perspective is not None:
+            arr = cv2.perspectiveTransform(arr.reshape(1, -1, 2), self.inverse_perspective).reshape(-1, 2)
+        if self.scale_x != 1.0:
+            arr[:, 0] /= self.scale_x
+        if self.scale_y != 1.0:
+            arr[:, 1] /= self.scale_y
+        return [(int(round(x)), int(round(y))) for x, y in arr]
+
 
 
 def to_gray(image: np.ndarray) -> np.ndarray:
@@ -32,6 +57,23 @@ def dynamic_illumination_equalization(gray: np.ndarray) -> np.ndarray:
     return corrected.astype(np.uint8)
 
 
+def gamma_boost(gray: np.ndarray, target_mean: float = 138.0) -> np.ndarray:
+    mean_value = float(np.mean(gray))
+    if not np.isfinite(mean_value):
+        return gray.copy()
+
+    current_ratio = float(np.clip(mean_value / 255.0, 1e-4, 1.0 - 1e-4))
+    target_ratio = float(np.clip(target_mean / 255.0, 1e-4, 1.0 - 1e-4))
+
+    denominator = float(np.log(current_ratio))
+    if abs(denominator) < 1e-6:
+        return gray.copy()
+
+    gamma = float(np.clip(np.log(target_ratio) / denominator, 0.45, 1.85))
+    lut = np.array([((idx / 255.0) ** gamma) * 255.0 for idx in range(256)], dtype=np.float32)
+    return cv2.LUT(gray, np.clip(lut, 0, 255).astype(np.uint8))
+
+
 def suppress_screen_artifacts(gray: np.ndarray) -> np.ndarray:
     h, w = gray.shape[:2]
     if min(h, w) >= 96:
@@ -42,6 +84,20 @@ def suppress_screen_artifacts(gray: np.ndarray) -> np.ndarray:
     bilateral = cv2.bilateralFilter(resampled, 7, 35, 35)
     median = cv2.medianBlur(bilateral, 3)
     return median
+
+
+def detail_preserving_boost(gray: np.ndarray) -> np.ndarray:
+    denoised = cv2.fastNlMeansDenoising(gray, None, h=7, templateWindowSize=7, searchWindowSize=21)
+    clahe = cv2.createCLAHE(clipLimit=2.4, tileGridSize=(8, 8)).apply(denoised)
+    return unsharp_masking(clahe, amount=0.9, threshold=2.0)
+
+
+def glare_compensation(gray: np.ndarray) -> np.ndarray:
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (15, 15))
+    closed = cv2.morphologyEx(gray, cv2.MORPH_CLOSE, kernel)
+    compensated = cv2.normalize(closed.astype(np.float32) - gray.astype(np.float32) + 128.0, None, 0, 255, cv2.NORM_MINMAX)
+    compensated_u8 = compensated.astype(np.uint8)
+    return cv2.createCLAHE(clipLimit=2.2, tileGridSize=(8, 8)).apply(compensated_u8)
 
 
 def watermark_suppression(gray: np.ndarray) -> np.ndarray:
@@ -92,22 +148,31 @@ def evaluate_quality(image: np.ndarray, points: Optional[np.ndarray] = None) -> 
     return FrameQualityMetrics(mean, std, lap, size, ratio, operator_hint(mean, lap, size))
 
 
-def rectify_candidate(gray: np.ndarray, points: np.ndarray, size: int = 512) -> np.ndarray:
+def rectification_matrices(points: np.ndarray, size: int = 512) -> tuple[np.ndarray, np.ndarray]:
     pts = np.asarray(points, dtype=np.float32).reshape(4, 2)
     dst = np.array([[0, 0], [size - 1, 0], [size - 1, size - 1], [0, size - 1]], dtype=np.float32)
-    m = cv2.getPerspectiveTransform(pts, dst)
-    return cv2.warpPerspective(gray, m, (size, size))
+    matrix = cv2.getPerspectiveTransform(pts, dst)
+    inverse = cv2.getPerspectiveTransform(dst, pts)
+    return matrix, inverse
 
 
-def build_candidates(image: np.ndarray, points: Optional[np.ndarray] = None) -> list[tuple[str, np.ndarray]]:
+def rectify_candidate(gray: np.ndarray, points: np.ndarray, size: int = 512) -> tuple[np.ndarray, np.ndarray]:
+    matrix, inverse = rectification_matrices(points, size=size)
+    return cv2.warpPerspective(gray, matrix, (size, size)), inverse
+
+
+def build_candidates(image: np.ndarray, points: Optional[np.ndarray] = None) -> list[PreprocessCandidate]:
     gray = to_gray(image)
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8)).apply(gray)
     sharp = unsharp_masking(gray)
     clahe_sharp = unsharp_masking(clahe)
-
+    gamma = gamma_boost(gray)
+    gamma_sharp = unsharp_masking(gamma, amount=0.85, threshold=2.0)
     dynamic_eq = dynamic_illumination_equalization(gray)
     screen_clean = suppress_screen_artifacts(gray)
     watermark_clean = watermark_suppression(gray)
+    glare_clean = glare_compensation(gray)
+    detail_preserved = detail_preserving_boost(gray)
     screen_sharp = unsharp_masking(screen_clean, amount=0.8, threshold=2.0)
 
     adaptive = cv2.adaptiveThreshold(clahe, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 35, 5)
@@ -123,42 +188,56 @@ def build_candidates(image: np.ndarray, points: Optional[np.ndarray] = None) -> 
     proposed = proposed_integral_threshold(gray).binary
     screen_proposed = proposed_integral_threshold(screen_clean).binary
     watermark_proposed = proposed_integral_threshold(watermark_clean).binary
+    glare_proposed = proposed_integral_threshold(glare_clean).binary
 
     out = [
-        ('gray', gray),
-        ('sharp', sharp),
-        ('clahe', clahe),
-        ('clahe_sharp', clahe_sharp),
-        ('dynamic_equalized', dynamic_eq),
-        ('screen_clean', screen_clean),
-        ('screen_sharp', screen_sharp),
-        ('watermark_suppressed', watermark_clean),
-        ('adaptive', adaptive),
-        ('adaptive_sharp', adaptive_sharp),
-        ('median', median),
-        ('upscaled', upscaled),
-        ('upscaled_adaptive', upscaled_adaptive),
-        ('otsu', otsu),
-        ('niblack', niblack),
-        ('yao', yao),
-        ('di', di),
-        ('proposed_integral', proposed),
-        ('screen_proposed_integral', screen_proposed),
-        ('watermark_proposed_integral', watermark_proposed),
+        PreprocessCandidate('gray', gray),
+        PreprocessCandidate('sharp', sharp),
+        PreprocessCandidate('clahe', clahe),
+        PreprocessCandidate('clahe_sharp', clahe_sharp),
+        PreprocessCandidate('gamma_boost', gamma),
+        PreprocessCandidate('gamma_sharp', gamma_sharp),
+        PreprocessCandidate('dynamic_equalized', dynamic_eq),
+        PreprocessCandidate('detail_preserved', detail_preserved),
+        PreprocessCandidate('glare_compensated', glare_clean),
+        PreprocessCandidate('screen_clean', screen_clean),
+        PreprocessCandidate('screen_sharp', screen_sharp),
+        PreprocessCandidate('watermark_suppressed', watermark_clean),
+        PreprocessCandidate('adaptive', adaptive),
+        PreprocessCandidate('adaptive_sharp', adaptive_sharp),
+        PreprocessCandidate('median', median),
+        PreprocessCandidate('upscaled', upscaled, scale_x=2.0, scale_y=2.0),
+        PreprocessCandidate('upscaled_adaptive', upscaled_adaptive, scale_x=2.0, scale_y=2.0),
+        PreprocessCandidate('otsu', otsu),
+        PreprocessCandidate('niblack', niblack),
+        PreprocessCandidate('yao', yao),
+        PreprocessCandidate('di', di),
+        PreprocessCandidate('proposed_integral', proposed),
+        PreprocessCandidate('screen_proposed_integral', screen_proposed),
+        PreprocessCandidate('watermark_proposed_integral', watermark_proposed),
+        PreprocessCandidate('glare_proposed_integral', glare_proposed),
     ]
     if points is not None and len(np.asarray(points).reshape(-1, 2)) >= 4:
-        rect = rectify_candidate(gray, points)
+        rect, inverse = rectify_candidate(gray, points)
         rclahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8)).apply(rect)
+        rgamma = gamma_boost(rect)
+        rdetail = detail_preserving_boost(rect)
         rwatermark = watermark_suppression(rect)
+        rglare = glare_compensation(rect)
         rad = cv2.adaptiveThreshold(rclahe, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 31, 5)
         rprop = proposed_integral_threshold(rect).binary
         rscreen = proposed_integral_threshold(suppress_screen_artifacts(rect)).binary
+        rglare_prop = proposed_integral_threshold(rglare).binary
         out += [
-            ('rectified', rect),
-            ('rectified_clahe', rclahe),
-            ('rectified_watermark_suppressed', rwatermark),
-            ('rectified_adaptive', rad),
-            ('rectified_proposed_integral', rprop),
-            ('rectified_screen_proposed_integral', rscreen),
+            PreprocessCandidate('rectified', rect, inverse_perspective=inverse),
+            PreprocessCandidate('rectified_clahe', rclahe, inverse_perspective=inverse),
+            PreprocessCandidate('rectified_gamma', rgamma, inverse_perspective=inverse),
+            PreprocessCandidate('rectified_detail_preserved', rdetail, inverse_perspective=inverse),
+            PreprocessCandidate('rectified_watermark_suppressed', rwatermark, inverse_perspective=inverse),
+            PreprocessCandidate('rectified_glare_compensated', rglare, inverse_perspective=inverse),
+            PreprocessCandidate('rectified_adaptive', rad, inverse_perspective=inverse),
+            PreprocessCandidate('rectified_proposed_integral', rprop, inverse_perspective=inverse),
+            PreprocessCandidate('rectified_screen_proposed_integral', rscreen, inverse_perspective=inverse),
+            PreprocessCandidate('rectified_glare_proposed_integral', rglare_prop, inverse_perspective=inverse),
         ]
     return out
