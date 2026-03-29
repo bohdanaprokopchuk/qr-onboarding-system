@@ -18,6 +18,11 @@ class PreprocessCandidate:
     scale_y: float = 1.0
     inverse_perspective: Optional[np.ndarray] = None
 
+    def __iter__(self):
+        yield self.name
+        yield self.image
+
+
     def remap_polygon(self, polygon: Any) -> list[tuple[int, int]] | None:
         if polygon is None:
             return None

@@ -116,8 +116,8 @@ class LinuxCameraSource(_BufferedFrameMixin):
             yield None, 'CAP_ANY'
             return
         if sys.platform.startswith('win'):
-            yield cv2.CAP_MSMF, 'CAP_MSMF'
             yield cv2.CAP_ANY, 'CAP_ANY'
+            yield cv2.CAP_MSMF, 'CAP_MSMF'
             yield cv2.CAP_DSHOW, 'CAP_DSHOW'
             return
         if sys.platform == 'darwin':
