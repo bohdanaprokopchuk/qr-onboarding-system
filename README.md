@@ -290,8 +290,8 @@ If you work on Windows, run all commands from the project root after activating 
 ### 1. Clone the repository
 
 ```bash
-git clone git@github.com:bohdanaprokopchuk/qr_onboarding_system.git
-cd qr_onboarding_system
+git clone git@github.com:bohdanaprokopchuk/qr-onboarding-system.git
+cd qr-onboarding-system
 ```
 
 ### 2. Create and activate a virtual environment
