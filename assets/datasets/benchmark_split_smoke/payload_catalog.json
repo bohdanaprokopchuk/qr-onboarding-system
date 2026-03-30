@@ -1,0 +1,18 @@
+{
+  "split_payload_000": {
+    "payload_id": "split_payload_000",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Split-0\",\"registration-id\":\"split-rid-0\",\"registration-token\":\"split-rtk-0\",\"CC\":\"US\"}",
+    "expected_normalized_hash": "3dfaba59f59480116edd1ff260660491ef7ecd76881bc4c31869f0606aacefed",
+    "expected_normalized_json": "{\"CC\":\"US\",\"registration-id\":\"split-rid-0\",\"registration-token\":\"split-rtk-0\",\"ssid\":\"Split-0\"}",
+    "notes": []
+  },
+  "split_payload_001": {
+    "payload_id": "split_payload_001",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Split-1\",\"registration-id\":\"split-rid-1\",\"registration-token\":\"split-rtk-1\",\"CC\":\"US\"}",
+    "expected_normalized_hash": "f49210c634663f1fc824b5f5f4ab4d75555cd2ed6adf49eab777126f63d1a242",
+    "expected_normalized_json": "{\"CC\":\"US\",\"registration-id\":\"split-rid-1\",\"registration-token\":\"split-rtk-1\",\"ssid\":\"Split-1\"}",
+    "notes": []
+  }
+}

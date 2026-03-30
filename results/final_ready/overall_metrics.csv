@@ -1,0 +1,11 @@
+method,success_rate_pct,exact_match_rate_pct,normalized_match_rate_pct,mean_time_ms,median_time_ms,count
+adaptive_full,99.214,99.214,99.214,386.249,131.737,1400
+adaptive_ml_only,96.786,96.786,96.786,260.434,130.927,1400
+adaptive_no_ml,99.214,99.214,99.214,399.738,130.106,1400
+adaptive_no_quality,99.214,99.214,99.214,347.342,111.496,1400
+adaptive_no_roi,99.214,99.214,99.214,410.185,130.666,1400
+adaptive_no_switch,96.786,96.786,96.786,259.932,130.315,1400
+fixed:proposed_integral,89.5,89.5,89.5,8264.764,1862.677,1400
+raw_combined,95.071,95.071,95.071,138.347,89.263,1400
+raw_opencv,91.0,91.0,91.0,110.67,69.584,1400
+raw_pyzbar,86.571,86.571,86.571,75.849,50.908,1400

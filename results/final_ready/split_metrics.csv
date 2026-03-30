@@ -1,0 +1,13 @@
+session_id,completed,completion_frame,used_parity,exact_match_rate_pct,normalized_match_rate_pct,count
+sess-00,True,2,False,100.0,100.0,4
+sess-01,True,3,True,100.0,100.0,3
+sess-02,True,2,False,100.0,100.0,4
+sess-03,True,3,True,100.0,100.0,3
+sess-04,True,2,False,100.0,100.0,4
+sess-05,True,3,True,100.0,100.0,3
+sess-06,True,2,False,100.0,100.0,4
+sess-07,True,3,True,100.0,100.0,3
+sess-08,True,2,False,100.0,100.0,4
+sess-09,True,3,True,100.0,100.0,3
+sess-10,True,2,False,100.0,100.0,4
+sess-11,True,3,True,100.0,100.0,3

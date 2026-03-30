@@ -1,0 +1,10 @@
+{
+  "payload_000": {
+    "payload_id": "payload_000",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Bench-0\",\"registration-id\":\"rid-0\",\"registration-token\":\"rtk-000\"}",
+    "expected_normalized_hash": "ad1331d43f7d4a7afa81d0cf69ef450c2bca7f40e72b9f070d856a17230beed8",
+    "expected_normalized_json": "{\"registration-id\":\"rid-0\",\"registration-token\":\"rtk-000\",\"ssid\":\"Bench-0\"}",
+    "notes": []
+  }
+}

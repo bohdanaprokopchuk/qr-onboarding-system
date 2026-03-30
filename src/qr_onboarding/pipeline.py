@@ -38,10 +38,38 @@ class QRReader:
             raw.polygon = candidate.remap_polygon(raw.polygon)
         return raw
 
+    def _quality_for_image(self, image: np.ndarray):
+        points = self.locator.detect(image)
+        return evaluate_quality(image, points)
+
+    def scan_image_pyzbar_only(self, image: np.ndarray) -> ScanResult:
+        attempts: list[DecodeAttempt] = []
+        quality = self._quality_for_image(image)
+        raw = self.zbar.recognize(image, 'direct_pyzbar')
+        if raw is None:
+            return ScanResult(success=False, attempts=attempts, quality=quality, error='No QR payload could be decoded via pyzbar-only baseline')
+        result = self._try_build_success_result(raw, attempts, quality)
+        if result is not None:
+            return result
+        return ScanResult(success=False, attempts=attempts, quality=quality, error='pyzbar decoded bytes were not interpretable in the expected formats')
+
+    def scan_image_opencv_only(self, image: np.ndarray) -> ScanResult:
+        attempts: list[DecodeAttempt] = []
+        quality = self._quality_for_image(image)
+        raw = self.locator.detect_and_decode_text(image, stage='direct_opencv')
+        if raw is None:
+            return ScanResult(success=False, attempts=attempts, quality=quality, error='No QR payload could be decoded via OpenCV-only baseline')
+        result = self._try_build_success_result(raw, attempts, quality)
+        if result is not None:
+            return result
+        return ScanResult(success=False, attempts=attempts, quality=quality, error='OpenCV decoded bytes were not interpretable in the expected formats')
+
+    def scan_image_raw_combined(self, image: np.ndarray) -> ScanResult:
+        return self.scan_image_direct(image)
+
     def scan_image_direct(self, image: np.ndarray) -> ScanResult:
         attempts: list[DecodeAttempt] = []
-        points = self.locator.detect(image)
-        quality = evaluate_quality(image, points)
+        quality = self._quality_for_image(image)
         for raw in self._candidate_decoders(image):
             result = self._try_build_success_result(raw, attempts, quality)
             if result is not None:

@@ -1,0 +1,1488 @@
+{
+  "overall_metrics": [
+    {
+      "method": "adaptive_full",
+      "success_rate_pct": 99.214,
+      "exact_match_rate_pct": 99.214,
+      "normalized_match_rate_pct": 99.214,
+      "mean_time_ms": 386.249,
+      "median_time_ms": 131.737,
+      "count": 1400
+    },
+    {
+      "method": "adaptive_ml_only",
+      "success_rate_pct": 96.786,
+      "exact_match_rate_pct": 96.786,
+      "normalized_match_rate_pct": 96.786,
+      "mean_time_ms": 260.434,
+      "median_time_ms": 130.927,
+      "count": 1400
+    },
+    {
+      "method": "adaptive_no_ml",
+      "success_rate_pct": 99.214,
+      "exact_match_rate_pct": 99.214,
+      "normalized_match_rate_pct": 99.214,
+      "mean_time_ms": 399.738,
+      "median_time_ms": 130.106,
+      "count": 1400
+    },
+    {
+      "method": "adaptive_no_quality",
+      "success_rate_pct": 99.214,
+      "exact_match_rate_pct": 99.214,
+      "normalized_match_rate_pct": 99.214,
+      "mean_time_ms": 347.342,
+      "median_time_ms": 111.496,
+      "count": 1400
+    },
+    {
+      "method": "adaptive_no_roi",
+      "success_rate_pct": 99.214,
+      "exact_match_rate_pct": 99.214,
+      "normalized_match_rate_pct": 99.214,
+      "mean_time_ms": 410.185,
+      "median_time_ms": 130.666,
+      "count": 1400
+    },
+    {
+      "method": "adaptive_no_switch",
+      "success_rate_pct": 96.786,
+      "exact_match_rate_pct": 96.786,
+      "normalized_match_rate_pct": 96.786,
+      "mean_time_ms": 259.932,
+      "median_time_ms": 130.315,
+      "count": 1400
+    },
+    {
+      "method": "fixed:proposed_integral",
+      "success_rate_pct": 89.5,
+      "exact_match_rate_pct": 89.5,
+      "normalized_match_rate_pct": 89.5,
+      "mean_time_ms": 8264.764,
+      "median_time_ms": 1862.677,
+      "count": 1400
+    },
+    {
+      "method": "raw_combined",
+      "success_rate_pct": 95.071,
+      "exact_match_rate_pct": 95.071,
+      "normalized_match_rate_pct": 95.071,
+      "mean_time_ms": 138.347,
+      "median_time_ms": 89.263,
+      "count": 1400
+    },
+    {
+      "method": "raw_opencv",
+      "success_rate_pct": 91.0,
+      "exact_match_rate_pct": 91.0,
+      "normalized_match_rate_pct": 91.0,
+      "mean_time_ms": 110.67,
+      "median_time_ms": 69.584,
+      "count": 1400
+    },
+    {
+      "method": "raw_pyzbar",
+      "success_rate_pct": 86.571,
+      "exact_match_rate_pct": 86.571,
+      "normalized_match_rate_pct": 86.571,
+      "mean_time_ms": 75.849,
+      "median_time_ms": 50.908,
+      "count": 1400
+    }
+  ],
+  "per_scenario_metrics": [
+    {
+      "scenario": "blur",
+      "method": "adaptive_full",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 4.0
+    },
+    {
+      "scenario": "blur",
+      "method": "adaptive_ml_only",
+      "success_rate_pct": 99.333,
+      "exact_match_rate_pct": 99.333,
+      "normalized_match_rate_pct": 99.333,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 3.333
+    },
+    {
+      "scenario": "blur",
+      "method": "adaptive_no_ml",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 4.0
+    },
+    {
+      "scenario": "blur",
+      "method": "adaptive_no_quality",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 4.0
+    },
+    {
+      "scenario": "blur",
+      "method": "adaptive_no_roi",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 4.0
+    },
+    {
+      "scenario": "blur",
+      "method": "adaptive_no_switch",
+      "success_rate_pct": 99.333,
+      "exact_match_rate_pct": 99.333,
+      "normalized_match_rate_pct": 99.333,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 3.333
+    },
+    {
+      "scenario": "blur",
+      "method": "fixed:proposed_integral",
+      "success_rate_pct": 94.667,
+      "exact_match_rate_pct": 94.667,
+      "normalized_match_rate_pct": 94.667,
+      "count": 150,
+      "gain_vs_raw_combined_pp": -1.333
+    },
+    {
+      "scenario": "blur",
+      "method": "raw_combined",
+      "success_rate_pct": 96.0,
+      "exact_match_rate_pct": 96.0,
+      "normalized_match_rate_pct": 96.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "blur",
+      "method": "raw_opencv",
+      "success_rate_pct": 91.333,
+      "exact_match_rate_pct": 91.333,
+      "normalized_match_rate_pct": 91.333,
+      "count": 150,
+      "gain_vs_raw_combined_pp": -4.667
+    },
+    {
+      "scenario": "blur",
+      "method": "raw_pyzbar",
+      "success_rate_pct": 96.0,
+      "exact_match_rate_pct": 96.0,
+      "normalized_match_rate_pct": 96.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "control",
+      "method": "adaptive_full",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 50,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "control",
+      "method": "adaptive_ml_only",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 50,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "control",
+      "method": "adaptive_no_ml",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 50,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "control",
+      "method": "adaptive_no_quality",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 50,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "control",
+      "method": "adaptive_no_roi",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 50,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "control",
+      "method": "adaptive_no_switch",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 50,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "control",
+      "method": "fixed:proposed_integral",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 50,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "control",
+      "method": "raw_combined",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 50,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "control",
+      "method": "raw_opencv",
+      "success_rate_pct": 96.0,
+      "exact_match_rate_pct": 96.0,
+      "normalized_match_rate_pct": 96.0,
+      "count": 50,
+      "gain_vs_raw_combined_pp": -4.0
+    },
+    {
+      "scenario": "control",
+      "method": "raw_pyzbar",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 50,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "distance_small_qr",
+      "method": "adaptive_full",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "distance_small_qr",
+      "method": "adaptive_ml_only",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "distance_small_qr",
+      "method": "adaptive_no_ml",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "distance_small_qr",
+      "method": "adaptive_no_quality",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "distance_small_qr",
+      "method": "adaptive_no_roi",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "distance_small_qr",
+      "method": "adaptive_no_switch",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "distance_small_qr",
+      "method": "fixed:proposed_integral",
+      "success_rate_pct": 61.333,
+      "exact_match_rate_pct": 61.333,
+      "normalized_match_rate_pct": 61.333,
+      "count": 150,
+      "gain_vs_raw_combined_pp": -38.667
+    },
+    {
+      "scenario": "distance_small_qr",
+      "method": "raw_combined",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "distance_small_qr",
+      "method": "raw_opencv",
+      "success_rate_pct": 95.333,
+      "exact_match_rate_pct": 95.333,
+      "normalized_match_rate_pct": 95.333,
+      "count": 150,
+      "gain_vs_raw_combined_pp": -4.667
+    },
+    {
+      "scenario": "distance_small_qr",
+      "method": "raw_pyzbar",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "glare",
+      "method": "adaptive_full",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "glare",
+      "method": "adaptive_ml_only",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "glare",
+      "method": "adaptive_no_ml",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "glare",
+      "method": "adaptive_no_quality",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "glare",
+      "method": "adaptive_no_roi",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "glare",
+      "method": "adaptive_no_switch",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "glare",
+      "method": "fixed:proposed_integral",
+      "success_rate_pct": 92.667,
+      "exact_match_rate_pct": 92.667,
+      "normalized_match_rate_pct": 92.667,
+      "count": 150,
+      "gain_vs_raw_combined_pp": -7.333
+    },
+    {
+      "scenario": "glare",
+      "method": "raw_combined",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "glare",
+      "method": "raw_opencv",
+      "success_rate_pct": 96.0,
+      "exact_match_rate_pct": 96.0,
+      "normalized_match_rate_pct": 96.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": -4.0
+    },
+    {
+      "scenario": "glare",
+      "method": "raw_pyzbar",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "low_contrast",
+      "method": "adaptive_full",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "low_contrast",
+      "method": "adaptive_ml_only",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "low_contrast",
+      "method": "adaptive_no_ml",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "low_contrast",
+      "method": "adaptive_no_quality",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "low_contrast",
+      "method": "adaptive_no_roi",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "low_contrast",
+      "method": "adaptive_no_switch",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "low_contrast",
+      "method": "fixed:proposed_integral",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "low_contrast",
+      "method": "raw_combined",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "low_contrast",
+      "method": "raw_opencv",
+      "success_rate_pct": 96.0,
+      "exact_match_rate_pct": 96.0,
+      "normalized_match_rate_pct": 96.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": -4.0
+    },
+    {
+      "scenario": "low_contrast",
+      "method": "raw_pyzbar",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "low_light",
+      "method": "adaptive_full",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "low_light",
+      "method": "adaptive_ml_only",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "low_light",
+      "method": "adaptive_no_ml",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "low_light",
+      "method": "adaptive_no_quality",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "low_light",
+      "method": "adaptive_no_roi",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "low_light",
+      "method": "adaptive_no_switch",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "low_light",
+      "method": "fixed:proposed_integral",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "low_light",
+      "method": "raw_combined",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "low_light",
+      "method": "raw_opencv",
+      "success_rate_pct": 96.0,
+      "exact_match_rate_pct": 96.0,
+      "normalized_match_rate_pct": 96.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": -4.0
+    },
+    {
+      "scenario": "low_light",
+      "method": "raw_pyzbar",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "motion_blur",
+      "method": "adaptive_full",
+      "success_rate_pct": 92.667,
+      "exact_match_rate_pct": 92.667,
+      "normalized_match_rate_pct": 92.667,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 28.667
+    },
+    {
+      "scenario": "motion_blur",
+      "method": "adaptive_ml_only",
+      "success_rate_pct": 70.667,
+      "exact_match_rate_pct": 70.667,
+      "normalized_match_rate_pct": 70.667,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 6.667
+    },
+    {
+      "scenario": "motion_blur",
+      "method": "adaptive_no_ml",
+      "success_rate_pct": 92.667,
+      "exact_match_rate_pct": 92.667,
+      "normalized_match_rate_pct": 92.667,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 28.667
+    },
+    {
+      "scenario": "motion_blur",
+      "method": "adaptive_no_quality",
+      "success_rate_pct": 92.667,
+      "exact_match_rate_pct": 92.667,
+      "normalized_match_rate_pct": 92.667,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 28.667
+    },
+    {
+      "scenario": "motion_blur",
+      "method": "adaptive_no_roi",
+      "success_rate_pct": 92.667,
+      "exact_match_rate_pct": 92.667,
+      "normalized_match_rate_pct": 92.667,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 28.667
+    },
+    {
+      "scenario": "motion_blur",
+      "method": "adaptive_no_switch",
+      "success_rate_pct": 70.667,
+      "exact_match_rate_pct": 70.667,
+      "normalized_match_rate_pct": 70.667,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 6.667
+    },
+    {
+      "scenario": "motion_blur",
+      "method": "fixed:proposed_integral",
+      "success_rate_pct": 56.667,
+      "exact_match_rate_pct": 56.667,
+      "normalized_match_rate_pct": 56.667,
+      "count": 150,
+      "gain_vs_raw_combined_pp": -7.333
+    },
+    {
+      "scenario": "motion_blur",
+      "method": "raw_combined",
+      "success_rate_pct": 64.0,
+      "exact_match_rate_pct": 64.0,
+      "normalized_match_rate_pct": 64.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "motion_blur",
+      "method": "raw_opencv",
+      "success_rate_pct": 62.667,
+      "exact_match_rate_pct": 62.667,
+      "normalized_match_rate_pct": 62.667,
+      "count": 150,
+      "gain_vs_raw_combined_pp": -1.333
+    },
+    {
+      "scenario": "motion_blur",
+      "method": "raw_pyzbar",
+      "success_rate_pct": 57.333,
+      "exact_match_rate_pct": 57.333,
+      "normalized_match_rate_pct": 57.333,
+      "count": 150,
+      "gain_vs_raw_combined_pp": -6.667
+    },
+    {
+      "scenario": "noise",
+      "method": "adaptive_full",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 4.667
+    },
+    {
+      "scenario": "noise",
+      "method": "adaptive_ml_only",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 4.667
+    },
+    {
+      "scenario": "noise",
+      "method": "adaptive_no_ml",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 4.667
+    },
+    {
+      "scenario": "noise",
+      "method": "adaptive_no_quality",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 4.667
+    },
+    {
+      "scenario": "noise",
+      "method": "adaptive_no_roi",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 4.667
+    },
+    {
+      "scenario": "noise",
+      "method": "adaptive_no_switch",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 4.667
+    },
+    {
+      "scenario": "noise",
+      "method": "fixed:proposed_integral",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 4.667
+    },
+    {
+      "scenario": "noise",
+      "method": "raw_combined",
+      "success_rate_pct": 95.333,
+      "exact_match_rate_pct": 95.333,
+      "normalized_match_rate_pct": 95.333,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "noise",
+      "method": "raw_opencv",
+      "success_rate_pct": 89.333,
+      "exact_match_rate_pct": 89.333,
+      "normalized_match_rate_pct": 89.333,
+      "count": 150,
+      "gain_vs_raw_combined_pp": -6.0
+    },
+    {
+      "scenario": "noise",
+      "method": "raw_pyzbar",
+      "success_rate_pct": 72.0,
+      "exact_match_rate_pct": 72.0,
+      "normalized_match_rate_pct": 72.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": -23.333
+    },
+    {
+      "scenario": "perspective",
+      "method": "adaptive_full",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "perspective",
+      "method": "adaptive_ml_only",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "perspective",
+      "method": "adaptive_no_ml",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "perspective",
+      "method": "adaptive_no_quality",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "perspective",
+      "method": "adaptive_no_roi",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "perspective",
+      "method": "adaptive_no_switch",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "perspective",
+      "method": "fixed:proposed_integral",
+      "success_rate_pct": 96.667,
+      "exact_match_rate_pct": 96.667,
+      "normalized_match_rate_pct": 96.667,
+      "count": 150,
+      "gain_vs_raw_combined_pp": -3.333
+    },
+    {
+      "scenario": "perspective",
+      "method": "raw_combined",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "perspective",
+      "method": "raw_opencv",
+      "success_rate_pct": 94.667,
+      "exact_match_rate_pct": 94.667,
+      "normalized_match_rate_pct": 94.667,
+      "count": 150,
+      "gain_vs_raw_combined_pp": -5.333
+    },
+    {
+      "scenario": "perspective",
+      "method": "raw_pyzbar",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "screen_artifact",
+      "method": "adaptive_full",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 1.333
+    },
+    {
+      "scenario": "screen_artifact",
+      "method": "adaptive_ml_only",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 1.333
+    },
+    {
+      "scenario": "screen_artifact",
+      "method": "adaptive_no_ml",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 1.333
+    },
+    {
+      "scenario": "screen_artifact",
+      "method": "adaptive_no_quality",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 1.333
+    },
+    {
+      "scenario": "screen_artifact",
+      "method": "adaptive_no_roi",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 1.333
+    },
+    {
+      "scenario": "screen_artifact",
+      "method": "adaptive_no_switch",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 1.333
+    },
+    {
+      "scenario": "screen_artifact",
+      "method": "fixed:proposed_integral",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 1.333
+    },
+    {
+      "scenario": "screen_artifact",
+      "method": "raw_combined",
+      "success_rate_pct": 98.667,
+      "exact_match_rate_pct": 98.667,
+      "normalized_match_rate_pct": 98.667,
+      "count": 150,
+      "gain_vs_raw_combined_pp": 0.0
+    },
+    {
+      "scenario": "screen_artifact",
+      "method": "raw_opencv",
+      "success_rate_pct": 96.0,
+      "exact_match_rate_pct": 96.0,
+      "normalized_match_rate_pct": 96.0,
+      "count": 150,
+      "gain_vs_raw_combined_pp": -2.667
+    },
+    {
+      "scenario": "screen_artifact",
+      "method": "raw_pyzbar",
+      "success_rate_pct": 49.333,
+      "exact_match_rate_pct": 49.333,
+      "normalized_match_rate_pct": 49.333,
+      "count": 150,
+      "gain_vs_raw_combined_pp": -49.334
+    }
+  ],
+  "per_severity_metrics": [
+    {
+      "severity": "control",
+      "method": "adaptive_full",
+      "success_rate_pct": 100.0,
+      "count": 50
+    },
+    {
+      "severity": "control",
+      "method": "adaptive_ml_only",
+      "success_rate_pct": 100.0,
+      "count": 50
+    },
+    {
+      "severity": "control",
+      "method": "adaptive_no_ml",
+      "success_rate_pct": 100.0,
+      "count": 50
+    },
+    {
+      "severity": "control",
+      "method": "adaptive_no_quality",
+      "success_rate_pct": 100.0,
+      "count": 50
+    },
+    {
+      "severity": "control",
+      "method": "adaptive_no_roi",
+      "success_rate_pct": 100.0,
+      "count": 50
+    },
+    {
+      "severity": "control",
+      "method": "adaptive_no_switch",
+      "success_rate_pct": 100.0,
+      "count": 50
+    },
+    {
+      "severity": "control",
+      "method": "fixed:proposed_integral",
+      "success_rate_pct": 100.0,
+      "count": 50
+    },
+    {
+      "severity": "control",
+      "method": "raw_combined",
+      "success_rate_pct": 100.0,
+      "count": 50
+    },
+    {
+      "severity": "control",
+      "method": "raw_opencv",
+      "success_rate_pct": 96.0,
+      "count": 50
+    },
+    {
+      "severity": "control",
+      "method": "raw_pyzbar",
+      "success_rate_pct": 100.0,
+      "count": 50
+    },
+    {
+      "severity": "hard",
+      "method": "adaptive_full",
+      "success_rate_pct": 98.222,
+      "count": 450
+    },
+    {
+      "severity": "hard",
+      "method": "adaptive_ml_only",
+      "success_rate_pct": 91.778,
+      "count": 450
+    },
+    {
+      "severity": "hard",
+      "method": "adaptive_no_ml",
+      "success_rate_pct": 98.222,
+      "count": 450
+    },
+    {
+      "severity": "hard",
+      "method": "adaptive_no_quality",
+      "success_rate_pct": 98.222,
+      "count": 450
+    },
+    {
+      "severity": "hard",
+      "method": "adaptive_no_roi",
+      "success_rate_pct": 98.222,
+      "count": 450
+    },
+    {
+      "severity": "hard",
+      "method": "adaptive_no_switch",
+      "success_rate_pct": 91.778,
+      "count": 450
+    },
+    {
+      "severity": "hard",
+      "method": "fixed:proposed_integral",
+      "success_rate_pct": 73.778,
+      "count": 450
+    },
+    {
+      "severity": "hard",
+      "method": "raw_combined",
+      "success_rate_pct": 86.444,
+      "count": 450
+    },
+    {
+      "severity": "hard",
+      "method": "raw_opencv",
+      "success_rate_pct": 82.667,
+      "count": 450
+    },
+    {
+      "severity": "hard",
+      "method": "raw_pyzbar",
+      "success_rate_pct": 67.111,
+      "count": 450
+    },
+    {
+      "severity": "low",
+      "method": "adaptive_full",
+      "success_rate_pct": 100.0,
+      "count": 450
+    },
+    {
+      "severity": "low",
+      "method": "adaptive_ml_only",
+      "success_rate_pct": 100.0,
+      "count": 450
+    },
+    {
+      "severity": "low",
+      "method": "adaptive_no_ml",
+      "success_rate_pct": 100.0,
+      "count": 450
+    },
+    {
+      "severity": "low",
+      "method": "adaptive_no_quality",
+      "success_rate_pct": 100.0,
+      "count": 450
+    },
+    {
+      "severity": "low",
+      "method": "adaptive_no_roi",
+      "success_rate_pct": 100.0,
+      "count": 450
+    },
+    {
+      "severity": "low",
+      "method": "adaptive_no_switch",
+      "success_rate_pct": 100.0,
+      "count": 450
+    },
+    {
+      "severity": "low",
+      "method": "fixed:proposed_integral",
+      "success_rate_pct": 100.0,
+      "count": 450
+    },
+    {
+      "severity": "low",
+      "method": "raw_combined",
+      "success_rate_pct": 100.0,
+      "count": 450
+    },
+    {
+      "severity": "low",
+      "method": "raw_opencv",
+      "success_rate_pct": 96.0,
+      "count": 450
+    },
+    {
+      "severity": "low",
+      "method": "raw_pyzbar",
+      "success_rate_pct": 99.778,
+      "count": 450
+    },
+    {
+      "severity": "medium",
+      "method": "adaptive_full",
+      "success_rate_pct": 99.333,
+      "count": 450
+    },
+    {
+      "severity": "medium",
+      "method": "adaptive_ml_only",
+      "success_rate_pct": 98.222,
+      "count": 450
+    },
+    {
+      "severity": "medium",
+      "method": "adaptive_no_ml",
+      "success_rate_pct": 99.333,
+      "count": 450
+    },
+    {
+      "severity": "medium",
+      "method": "adaptive_no_quality",
+      "success_rate_pct": 99.333,
+      "count": 450
+    },
+    {
+      "severity": "medium",
+      "method": "adaptive_no_roi",
+      "success_rate_pct": 99.333,
+      "count": 450
+    },
+    {
+      "severity": "medium",
+      "method": "adaptive_no_switch",
+      "success_rate_pct": 98.222,
+      "count": 450
+    },
+    {
+      "severity": "medium",
+      "method": "fixed:proposed_integral",
+      "success_rate_pct": 93.556,
+      "count": 450
+    },
+    {
+      "severity": "medium",
+      "method": "raw_combined",
+      "success_rate_pct": 98.222,
+      "count": 450
+    },
+    {
+      "severity": "medium",
+      "method": "raw_opencv",
+      "success_rate_pct": 93.778,
+      "count": 450
+    },
+    {
+      "severity": "medium",
+      "method": "raw_pyzbar",
+      "success_rate_pct": 91.333,
+      "count": 450
+    }
+  ],
+  "stage_wins": [
+    {
+      "stage": "direct",
+      "wins": 9198
+    },
+    {
+      "stage": "direct_opencv",
+      "wins": 1336
+    },
+    {
+      "stage": "proposed_integral",
+      "wins": 1258
+    },
+    {
+      "stage": "direct_pyzbar",
+      "wins": 1212
+    },
+    {
+      "stage": "di",
+      "wins": 70
+    },
+    {
+      "stage": "direct_opencv_multi",
+      "wins": 57
+    },
+    {
+      "stage": "adaptive",
+      "wins": 51
+    },
+    {
+      "stage": "ml_deblur",
+      "wins": 40
+    },
+    {
+      "stage": "watermark_suppressed",
+      "wins": 27
+    },
+    {
+      "stage": "median",
+      "wins": 17
+    },
+    {
+      "stage": "detail_preserved",
+      "wins": 14
+    },
+    {
+      "stage": "upscaled",
+      "wins": 12
+    },
+    {
+      "stage": "clahe",
+      "wins": 9
+    },
+    {
+      "stage": "rectified_clahe",
+      "wins": 9
+    },
+    {
+      "stage": "ml_super_res",
+      "wins": 8
+    },
+    {
+      "stage": "rectified_detail_preserved",
+      "wins": 8
+    },
+    {
+      "stage": "sharp",
+      "wins": 4
+    },
+    {
+      "stage": "rectified",
+      "wins": 4
+    },
+    {
+      "stage": "yao",
+      "wins": 2
+    }
+  ],
+  "stream_metrics": [
+    {
+      "method": "adaptive_full_stream",
+      "scenario": "distance_small_qr",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "mean_time_ms": 105.41,
+      "first_success_frame_mean": 0,
+      "count": 40
+    },
+    {
+      "method": "adaptive_full_stream",
+      "scenario": "glare",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "mean_time_ms": 98.477,
+      "first_success_frame_mean": 0,
+      "count": 40
+    },
+    {
+      "method": "adaptive_full_stream",
+      "scenario": "low_light",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "mean_time_ms": 108.609,
+      "first_success_frame_mean": 0,
+      "count": 40
+    },
+    {
+      "method": "adaptive_no_roi_stream",
+      "scenario": "distance_small_qr",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "mean_time_ms": 128.721,
+      "first_success_frame_mean": 0,
+      "count": 40
+    },
+    {
+      "method": "adaptive_no_roi_stream",
+      "scenario": "glare",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "mean_time_ms": 117.315,
+      "first_success_frame_mean": 0,
+      "count": 40
+    },
+    {
+      "method": "adaptive_no_roi_stream",
+      "scenario": "low_light",
+      "success_rate_pct": 100.0,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "mean_time_ms": 140.204,
+      "first_success_frame_mean": 0,
+      "count": 40
+    }
+  ],
+  "split_metrics": [
+    {
+      "session_id": "sess-00",
+      "completed": true,
+      "completion_frame": 2,
+      "used_parity": false,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 4
+    },
+    {
+      "session_id": "sess-01",
+      "completed": true,
+      "completion_frame": 3,
+      "used_parity": true,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 3
+    },
+    {
+      "session_id": "sess-02",
+      "completed": true,
+      "completion_frame": 2,
+      "used_parity": false,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 4
+    },
+    {
+      "session_id": "sess-03",
+      "completed": true,
+      "completion_frame": 3,
+      "used_parity": true,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 3
+    },
+    {
+      "session_id": "sess-04",
+      "completed": true,
+      "completion_frame": 2,
+      "used_parity": false,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 4
+    },
+    {
+      "session_id": "sess-05",
+      "completed": true,
+      "completion_frame": 3,
+      "used_parity": true,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 3
+    },
+    {
+      "session_id": "sess-06",
+      "completed": true,
+      "completion_frame": 2,
+      "used_parity": false,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 4
+    },
+    {
+      "session_id": "sess-07",
+      "completed": true,
+      "completion_frame": 3,
+      "used_parity": true,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 3
+    },
+    {
+      "session_id": "sess-08",
+      "completed": true,
+      "completion_frame": 2,
+      "used_parity": false,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 4
+    },
+    {
+      "session_id": "sess-09",
+      "completed": true,
+      "completion_frame": 3,
+      "used_parity": true,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 3
+    },
+    {
+      "session_id": "sess-10",
+      "completed": true,
+      "completion_frame": 2,
+      "used_parity": false,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 4
+    },
+    {
+      "session_id": "sess-11",
+      "completed": true,
+      "completion_frame": 3,
+      "used_parity": true,
+      "exact_match_rate_pct": 100.0,
+      "normalized_match_rate_pct": 100.0,
+      "count": 3
+    }
+  ]
+}

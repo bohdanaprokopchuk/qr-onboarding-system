@@ -1,0 +1,59 @@
+step,returncode,stdout_tail,stderr_tail
+pytest,0,"...................................                                      [100%]
+35 passed in 7.86s
+",
+research-benchmark,0,""": 1.0
+    },
+    ""combined_hard"": {
+      ""total"": 4,
+      ""direct_successes"": 0,
+      ""classic_successes"": 0,
+      ""enhanced_successes"": 0,
+      ""direct_rate"": 0.0,
+      ""classic_rate"": 0.0,
+      ""enhanced_rate"": 0.0
+    }
+  },
+  ""top_enhancement_stages"": [
+    [
+      ""direct"",
+      19
+    ],
+    [
+      ""proposed_integral"",
+      2
+    ],
+    [
+      ""otsu"",
+      1
+    ],
+    [
+      ""detail_preserved"",
+      1
+    ]
+  ],
+  ""csv"": ""research_benchmark.csv"",
+  ""scenarios"": [
+    ""clean"",
+    ""strong_blur"",
+    ""very_low_light"",
+    ""tiny_qr"",
+    ""perspective"",
+    ""glare"",
+    ""screen_realistic"",
+    ""combined_hard""
+  ],
+  ""payload_mode"": ""mixed"",
+  ""size"": 256,
+  ""seed"": 12345
+}
+",
+binarization-benchmark,0,"{'otsu': {'mean_elapsed_seconds': 0.000354, 'recognition_rate_percent': 100.0, 'samples': 18}, 'niblack': {'mean_elapsed_seconds': 0.00877, 'recognition_rate_percent': 100.0, 'samples': 18}, 'yao': {'mean_elapsed_seconds': 0.010259, 'recognition_rate_percent': 100.0, 'samples': 18}, 'di': {'mean_elapsed_seconds': 0.016921, 'recognition_rate_percent': 100.0, 'samples': 18}, 'proposed_integral': {'mean_elapsed_seconds': 0.013544, 'recognition_rate_percent': 100.0, 'samples': 18}}
+{'csv': 'binarization_benchmark.csv'}
+",
+generate-static-benchmark-dataset,0,"{'output_root': 'assets\\datasets\\benchmark_static_smoke', 'payload_count': 2, 'control_cases': 2, 'challenging_cases': 54, 'total_cases': 56}
+",
+run-static-benchmark,0,"{'rows': 168, 'methods': ['raw_combined', 'fixed:proposed_integral', 'adaptive_full'], 'output_csv': 'results\\static_benchmark_smoke.csv'}
+",
+aggregate-benchmarks,0,"{'outdir': 'results\\thesis_ready_smoke', 'tables': ['overall_metrics.csv', 'per_scenario_metrics.csv', 'per_severity_metrics.csv', 'split_metrics.csv', 'stage_wins.csv', 'stream_metrics.csv'], 'figures': ['overall_success.png', 'scenario_gain_adaptive_full.png', 'severity_curve_adaptive_full.png', 'stage_wins.png']}
+",

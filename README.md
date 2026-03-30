@@ -3,6 +3,7 @@
 A research-oriented and application-ready QR code reading system for reliable decoding under challenging camera and environmental conditions.
 
 The project extends conventional QR scanning with adaptive preprocessing, enhanced decoding strategies, ROI tracking, multi-frame stabilization, payload-aware optimization, and evaluation tooling. It is designed both as a practical computer vision solution and as a structured experimental platform for studying robust QR decoding pipelines.
+The system follows a modular QR reading workflow and is organized as two complementary layers: an operational layer for practical decoding and live processing, and an experimental layer for benchmarking, ablation studies, validation, and analytical export.
 
 ---
 
@@ -21,7 +22,7 @@ The repository combines:
 
 This makes the project suitable for:
 
-- diploma and research work in computer vision
+- research work in computer vision
 - comparative evaluation of QR recovery pipelines
 - experiments on difficult real-world camera input
 - demonstration of robust QR decoding under adverse conditions
@@ -163,6 +164,103 @@ Implemented through:
 - `provisioning.py`
 - `consent.py`
 - `crypto_utils.py`
+
+### 13. Experimental Benchmarking
+The project includes a separate experimental benchmarking component for evaluating QR decoding performance across static-image, streaming, and split-QR scenarios. It supports method comparison, ablation studies, metric aggregation, and export of final result tables and plots.
+
+Implemented through:
+
+- `tools/run_static_benchmark.py`
+- `tools/run_stream_benchmark.py`
+- `tools/run_split_benchmark.py`
+- `tools/aggregate_benchmarks.py`
+- `tools/export_final_tables.py`
+
+## Experimental Layer
+
+Alongside the main QR decoding pipeline, the project includes an experimental layer for systematic testing and comparison of different processing configurations.
+
+Its role is not only to check whether a QR code can be decoded, but also to examine how different parts of the system affect the result under difficult conditions such as blur, low light, unstable framing, and payload complexity. This makes the repository useful not only as an implementation, but also as a research environment for controlled evaluation.
+
+### What the Experimental Layer Covers
+
+The experimental layer supports:
+
+- comparison of baseline and enhanced decoding pipelines
+- evaluation of preprocessing and thresholding methods
+- ablation analysis of adaptive subsystems
+- benchmarking for static-image, stream, and split-QR scenarios
+- aggregation of final metrics and export of result artifacts
+
+### Benchmark Directions
+
+The latest stage of the project includes three main benchmark directions.
+
+#### 1. Static-image benchmark
+This benchmark evaluates decoding quality on still images under controlled degradation scenarios. It is used to compare methods under blur, low illumination, contrast loss, glare, perspective distortion, and similar visual challenges.
+
+#### 2. Stream benchmark
+This benchmark evaluates performance on sequential camera-like input, where decoding depends not only on image quality, but also on temporal stability, motion, noise, and ROI persistence. It is intended to reflect more realistic live scanning conditions.
+
+#### 3. Split-QR benchmark
+This benchmark evaluates workflows in which payload data is distributed across multiple QR fragments and then reconstructed. It extends the project beyond standard single-code decoding and supports experiments with structured payload delivery.
+
+### Comparative and Ablation Evaluation
+
+The experimental layer is designed to compare multiple decoding modes rather than only one final pipeline. In the current evaluation setup, the project benchmarks the following configurations:
+
+- `raw_pyzbar`
+- `raw_opencv`
+- `raw_combined`
+- `fixed:proposed_integral`
+- `adaptive_full`
+- `adaptive_no_roi`
+- `adaptive_no_ml`
+- `adaptive_no_switch`
+- `adaptive_no_quality`
+- `adaptive_ml_only`
+
+### Place of the Experimental Layer in the Architecture
+
+From an architectural perspective, the repository consists of two connected parts:
+
+- **Operational layer**  
+  handles image acquisition, preprocessing, localization, decoding, ROI tracking, and live execution
+
+- **Experimental layer**  
+  handles benchmarking, ablation analysis, metric aggregation, validation workflows, and export of final results
+
+### Experimental Workflow
+
+The experimental workflow follows these steps:
+
+1. prepare datasets and manifests for static, stream, or split scenarios  
+2. run benchmark scripts for selected decoding modes  
+3. collect raw CSV results for each benchmark type  
+4. aggregate the results into summary tables  
+5. export tables and plots for analysis and presentation
+
+### Final Outputs
+
+The exported outputs include:
+
+- `overall_metrics.csv`
+- `per_scenario_metrics.csv`
+- `per_severity_metrics.csv`
+- `split_metrics.csv`
+- `stream_metrics.csv`
+- plots in `.png` format
+
+The final aggregation stage also prepares result directories such as `final_ready` and `final_export`.
+
+### Research Value
+
+The experimental layer strengthens the research value of the project because it supports:
+
+- systematic comparison of recovery strategies
+- controlled evaluation under difficult visual conditions
+- ablation-based analysis of subsystem contribution
+- experiments with advanced payload and split-QR workflows
 
 ---
 
@@ -382,8 +480,8 @@ python -m qr_onboarding.cli batch ./assets/datasets --pattern "**/*.png" --csv .
 ```cmd
 run_desktop_console.bat
 ```
+or
 
-Для PowerShell краще написати так:
 ```
 .\run_desktop_console.bat
 ```
@@ -500,7 +598,7 @@ The repository includes automated tests for:
 - split QR workflows
 - end-to-end web API behavior
 
-This improves reproducibility and supports both academic demonstration and engineering validation.
+This improves reproducibility and supports engineering validation.
 
 ---
 
@@ -555,4 +653,4 @@ This can happen if the platform is missing external runtime support required by 
 
 ## Conclusion
 
-QR Onboarding System provides a modular and extensible framework for enhanced QR code reading from images and live camera streams. It combines practical computer vision methods with evaluation, benchmarking, and research tooling, making it suitable for both real-world experimentation and academic demonstration of robust QR decoding under challenging conditions.
+QR Onboarding System provides a modular and extensible framework for enhanced QR code reading from images and live camera streams. It combines practical computer vision methods with evaluation, benchmarking, and research tooling, making it suitable for real-world experimentation of robust QR decoding under challenging conditions.

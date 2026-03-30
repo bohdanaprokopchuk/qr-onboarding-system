@@ -1,0 +1,20 @@
+{
+  "payload_000": {
+    "payload_id": "payload_000",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Bench-0\",\"registration-id\":\"rid-0\",\"registration-token\":\"rtk-000\"}",
+    "expected_normalized_hash": "ad1331d43f7d4a7afa81d0cf69ef450c2bca7f40e72b9f070d856a17230beed8",
+    "expected_normalized_json": "{\"registration-id\":\"rid-0\",\"registration-token\":\"rtk-000\",\"ssid\":\"Bench-0\"}",
+    "notes": []
+  },
+  "payload_001": {
+    "payload_id": "payload_001",
+    "payload_kind": "secure-bootstrap-uri",
+    "expected_text": "https://example.org/bootstrap/1?rid=rid-1&token=rtk-001",
+    "expected_normalized_hash": "6e730a897411e59357c4330d6f6c59983145265e67cd7e2418a318c00d80a4bd",
+    "expected_normalized_json": "{\"host\":\"example.org\",\"path\":\"/bootstrap/1\",\"query\":{\"rid\":\"rid-1\",\"token\":\"rtk-001\"},\"scheme\":\"https\",\"uri\":\"https://example.org/bootstrap/1?rid=rid-1&token=rtk-001\"}",
+    "notes": [
+      "Secure bootstrap URI"
+    ]
+  }
+}

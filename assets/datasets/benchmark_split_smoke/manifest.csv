@@ -1,0 +1,9 @@
+session_id,frame_index,image_path,payload_id,chunk_index,total_chunks,parity_available,payload_kind,expected_present,notes
+sess-00,0,session_00/chunk_000.png,split_payload_000,0,3,True,split-chunk,True,Split-QR chunk sequence with parity block
+sess-00,1,session_00/chunk_001.png,split_payload_000,1,3,True,split-chunk,True,Split-QR chunk sequence with parity block
+sess-00,2,session_00/chunk_002.png,split_payload_000,2,3,True,split-chunk,True,Split-QR chunk sequence with parity block
+sess-00,3,session_00/chunk_003.png,split_payload_000,3,3,True,split-chunk,True,Split-QR chunk sequence with parity block
+sess-01,0,session_01/chunk_000.png,split_payload_001,0,3,True,split-chunk,True,Split-QR chunk sequence with parity block
+sess-01,1,session_01/chunk_001.png,split_payload_001,1,3,True,split-chunk,True,Split-QR chunk sequence with parity block
+sess-01,2,session_01/chunk_002.png,split_payload_001,2,3,True,split-chunk,True,Split-QR chunk sequence with parity block
+sess-01,3,session_01/chunk_003.png,split_payload_001,3,3,True,split-chunk,True,Split-QR chunk sequence with parity block

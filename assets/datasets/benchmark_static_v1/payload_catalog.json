@@ -1,0 +1,484 @@
+{
+  "payload_000": {
+    "payload_id": "payload_000",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Bench-0\",\"registration-id\":\"rid-0\",\"registration-token\":\"rtk-000\"}",
+    "expected_normalized_hash": "ad1331d43f7d4a7afa81d0cf69ef450c2bca7f40e72b9f070d856a17230beed8",
+    "expected_normalized_json": "{\"registration-id\":\"rid-0\",\"registration-token\":\"rtk-000\",\"ssid\":\"Bench-0\"}",
+    "notes": []
+  },
+  "payload_001": {
+    "payload_id": "payload_001",
+    "payload_kind": "secure-bootstrap-uri",
+    "expected_text": "https://example.org/bootstrap/1?rid=rid-1&token=rtk-001",
+    "expected_normalized_hash": "6e730a897411e59357c4330d6f6c59983145265e67cd7e2418a318c00d80a4bd",
+    "expected_normalized_json": "{\"host\":\"example.org\",\"path\":\"/bootstrap/1\",\"query\":{\"rid\":\"rid-1\",\"token\":\"rtk-001\"},\"scheme\":\"https\",\"uri\":\"https://example.org/bootstrap/1?rid=rid-1&token=rtk-001\"}",
+    "notes": [
+      "Secure bootstrap URI"
+    ]
+  },
+  "payload_002": {
+    "payload_id": "payload_002",
+    "payload_kind": "wifi-direct",
+    "expected_text": "WIFI:T:WPA;S:LabNet-2;P:pass-002-A;H:false;;",
+    "expected_normalized_hash": "49922d98a9a282c3e5dfb23f18f2731de3cfd1d75a5f13d76cc3d2cf40ac533c",
+    "expected_normalized_json": "{\"hidden\":\"false\",\"psk\":\"pass-002-A\",\"security\":\"WPA\",\"ssid\":\"LabNet-2\"}",
+    "notes": [
+      "Direct Wi-Fi onboarding payload"
+    ]
+  },
+  "payload_003": {
+    "payload_id": "payload_003",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"my;\\\"shiny\\\";ssid-3\",\"psk\":\"\\\"\\\"\\\"\\\\;;;buzz-3;;;\\\\\\\"\\\"\\\"\",\"CC\":\"US\",\"registration-id\":\"rid-special-3\",\"registration-token\":\"rtk-special-3\"}",
+    "expected_normalized_hash": "1594d3e8ad878d0d22600cebac89d91e7d3a879727c5087847d6d74f3d9e94dd",
+    "expected_normalized_json": "{\"CC\":\"US\",\"psk\":\"\\\"\\\"\\\"\\\\;;;buzz-3;;;\\\\\\\"\\\"\\\"\",\"registration-id\":\"rid-special-3\",\"registration-token\":\"rtk-special-3\",\"ssid\":\"my;\\\"shiny\\\";ssid-3\"}",
+    "notes": [
+      "QR contains direct network credentials; consider secure bootstrap instead"
+    ]
+  },
+  "payload_004": {
+    "payload_id": "payload_004",
+    "payload_kind": "wifi-easy-connect",
+    "expected_text": "DPP:K:MDkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDIgADemo04;M:112233445566;C:81/1;I:Device-4;;",
+    "expected_normalized_hash": "17583836dea620a059170d73e96e3229a84df8baa3a7baafe0f6476d935ab0c3",
+    "expected_normalized_json": "{\"uri\":\"DPP:K:MDkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDIgADemo04;M:112233445566;C:81/1;I:Device-4;;\"}",
+    "notes": [
+      "Bootstrap URI for Wi-Fi Easy Connect / DPP"
+    ]
+  },
+  "payload_005": {
+    "payload_id": "payload_005",
+    "payload_kind": "plain-text",
+    "expected_text": "Plain-text benchmark payload 5 with unicode Україна and control sentence.",
+    "expected_normalized_hash": "321217f61497117d26e38dadd08059ba898e55ef7c09459b46bd8e7b6ab54eba",
+    "expected_normalized_json": "{\"text\":\"Plain-text benchmark payload 5 with unicode Україна and control sentence.\"}",
+    "notes": [
+      "Unstructured payload"
+    ]
+  },
+  "payload_006": {
+    "payload_id": "payload_006",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Bench-6\",\"registration-id\":\"rid-6\",\"registration-token\":\"rtk-006\"}",
+    "expected_normalized_hash": "0586b13703cdbac931d021cf4d7ea9137c32e6b1870268b01e8b229983fd12fd",
+    "expected_normalized_json": "{\"registration-id\":\"rid-6\",\"registration-token\":\"rtk-006\",\"ssid\":\"Bench-6\"}",
+    "notes": []
+  },
+  "payload_007": {
+    "payload_id": "payload_007",
+    "payload_kind": "secure-bootstrap-uri",
+    "expected_text": "https://example.org/bootstrap/7?rid=rid-7&token=rtk-007",
+    "expected_normalized_hash": "b1075f0eeffac477886f3559b4186eded34400f6389225adc479a9e93a066d61",
+    "expected_normalized_json": "{\"host\":\"example.org\",\"path\":\"/bootstrap/7\",\"query\":{\"rid\":\"rid-7\",\"token\":\"rtk-007\"},\"scheme\":\"https\",\"uri\":\"https://example.org/bootstrap/7?rid=rid-7&token=rtk-007\"}",
+    "notes": [
+      "Secure bootstrap URI"
+    ]
+  },
+  "payload_008": {
+    "payload_id": "payload_008",
+    "payload_kind": "wifi-direct",
+    "expected_text": "WIFI:T:WPA;S:LabNet-8;P:pass-008-A;H:false;;",
+    "expected_normalized_hash": "4dd455fece4d3ce94563271db0854ccdcdd3b58d93c971aadc1e6b64cd34981a",
+    "expected_normalized_json": "{\"hidden\":\"false\",\"psk\":\"pass-008-A\",\"security\":\"WPA\",\"ssid\":\"LabNet-8\"}",
+    "notes": [
+      "Direct Wi-Fi onboarding payload"
+    ]
+  },
+  "payload_009": {
+    "payload_id": "payload_009",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"my;\\\"shiny\\\";ssid-9\",\"psk\":\"\\\"\\\"\\\"\\\\;;;buzz-9;;;\\\\\\\"\\\"\\\"\",\"CC\":\"US\",\"registration-id\":\"rid-special-9\",\"registration-token\":\"rtk-special-9\"}",
+    "expected_normalized_hash": "dfd0d923afbe33d7084c77734fcfe4dbe6338219d02edd159cd54cbaafcbaabd",
+    "expected_normalized_json": "{\"CC\":\"US\",\"psk\":\"\\\"\\\"\\\"\\\\;;;buzz-9;;;\\\\\\\"\\\"\\\"\",\"registration-id\":\"rid-special-9\",\"registration-token\":\"rtk-special-9\",\"ssid\":\"my;\\\"shiny\\\";ssid-9\"}",
+    "notes": [
+      "QR contains direct network credentials; consider secure bootstrap instead"
+    ]
+  },
+  "payload_010": {
+    "payload_id": "payload_010",
+    "payload_kind": "wifi-easy-connect",
+    "expected_text": "DPP:K:MDkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDIgADemo10;M:112233445566;C:81/1;I:Device-10;;",
+    "expected_normalized_hash": "dd837392f990324b60313a69d8a228a9f8f27900bb0a2a8d660aae49c1fc6eb1",
+    "expected_normalized_json": "{\"uri\":\"DPP:K:MDkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDIgADemo10;M:112233445566;C:81/1;I:Device-10;;\"}",
+    "notes": [
+      "Bootstrap URI for Wi-Fi Easy Connect / DPP"
+    ]
+  },
+  "payload_011": {
+    "payload_id": "payload_011",
+    "payload_kind": "plain-text",
+    "expected_text": "Plain-text benchmark payload 11 with unicode Україна and control sentence.",
+    "expected_normalized_hash": "2583734fa447449a9fc453f39ac923a15f1a8e10a00e21bc8e2172608e8e5bf9",
+    "expected_normalized_json": "{\"text\":\"Plain-text benchmark payload 11 with unicode Україна and control sentence.\"}",
+    "notes": [
+      "Unstructured payload"
+    ]
+  },
+  "payload_012": {
+    "payload_id": "payload_012",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Bench-12\",\"registration-id\":\"rid-12\",\"registration-token\":\"rtk-012\"}",
+    "expected_normalized_hash": "e993478fa475851d59cf6a0c0b8cb20f8a2392246cb79a73539c9733a603544b",
+    "expected_normalized_json": "{\"registration-id\":\"rid-12\",\"registration-token\":\"rtk-012\",\"ssid\":\"Bench-12\"}",
+    "notes": []
+  },
+  "payload_013": {
+    "payload_id": "payload_013",
+    "payload_kind": "secure-bootstrap-uri",
+    "expected_text": "https://example.org/bootstrap/13?rid=rid-13&token=rtk-013",
+    "expected_normalized_hash": "3a09765e547739a1c9ddd4ffdb6f3d98832bc7098961089ef05c20c25f2fcb03",
+    "expected_normalized_json": "{\"host\":\"example.org\",\"path\":\"/bootstrap/13\",\"query\":{\"rid\":\"rid-13\",\"token\":\"rtk-013\"},\"scheme\":\"https\",\"uri\":\"https://example.org/bootstrap/13?rid=rid-13&token=rtk-013\"}",
+    "notes": [
+      "Secure bootstrap URI"
+    ]
+  },
+  "payload_014": {
+    "payload_id": "payload_014",
+    "payload_kind": "wifi-direct",
+    "expected_text": "WIFI:T:WPA;S:LabNet-14;P:pass-014-A;H:false;;",
+    "expected_normalized_hash": "a6db8626621214c5bcece5960ff307290df26a458c258496a151ee06360382db",
+    "expected_normalized_json": "{\"hidden\":\"false\",\"psk\":\"pass-014-A\",\"security\":\"WPA\",\"ssid\":\"LabNet-14\"}",
+    "notes": [
+      "Direct Wi-Fi onboarding payload"
+    ]
+  },
+  "payload_015": {
+    "payload_id": "payload_015",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"my;\\\"shiny\\\";ssid-15\",\"psk\":\"\\\"\\\"\\\"\\\\;;;buzz-15;;;\\\\\\\"\\\"\\\"\",\"CC\":\"US\",\"registration-id\":\"rid-special-15\",\"registration-token\":\"rtk-special-15\"}",
+    "expected_normalized_hash": "c5201fd1004478e50fe068c2cacf118bf5863060c5dd58e9cdaec40d3afe2a1e",
+    "expected_normalized_json": "{\"CC\":\"US\",\"psk\":\"\\\"\\\"\\\"\\\\;;;buzz-15;;;\\\\\\\"\\\"\\\"\",\"registration-id\":\"rid-special-15\",\"registration-token\":\"rtk-special-15\",\"ssid\":\"my;\\\"shiny\\\";ssid-15\"}",
+    "notes": [
+      "QR contains direct network credentials; consider secure bootstrap instead"
+    ]
+  },
+  "payload_016": {
+    "payload_id": "payload_016",
+    "payload_kind": "wifi-easy-connect",
+    "expected_text": "DPP:K:MDkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDIgADemo16;M:112233445566;C:81/1;I:Device-16;;",
+    "expected_normalized_hash": "a9b6d3d18a47e01160d90a9de2064e6b52df2a08c9490b412a270dfea5072fe3",
+    "expected_normalized_json": "{\"uri\":\"DPP:K:MDkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDIgADemo16;M:112233445566;C:81/1;I:Device-16;;\"}",
+    "notes": [
+      "Bootstrap URI for Wi-Fi Easy Connect / DPP"
+    ]
+  },
+  "payload_017": {
+    "payload_id": "payload_017",
+    "payload_kind": "plain-text",
+    "expected_text": "Plain-text benchmark payload 17 with unicode Україна and control sentence.",
+    "expected_normalized_hash": "dd6cc30b32c5d2b8f1cb0301b01100481d3c510724e1bf54dadf82054908e397",
+    "expected_normalized_json": "{\"text\":\"Plain-text benchmark payload 17 with unicode Україна and control sentence.\"}",
+    "notes": [
+      "Unstructured payload"
+    ]
+  },
+  "payload_018": {
+    "payload_id": "payload_018",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Bench-18\",\"registration-id\":\"rid-18\",\"registration-token\":\"rtk-018\"}",
+    "expected_normalized_hash": "26a023f9f2eb3db034cb354e1e49dd465cbd41e3ac6e9c5442e5de48846a4690",
+    "expected_normalized_json": "{\"registration-id\":\"rid-18\",\"registration-token\":\"rtk-018\",\"ssid\":\"Bench-18\"}",
+    "notes": []
+  },
+  "payload_019": {
+    "payload_id": "payload_019",
+    "payload_kind": "secure-bootstrap-uri",
+    "expected_text": "https://example.org/bootstrap/19?rid=rid-19&token=rtk-019",
+    "expected_normalized_hash": "113b38e187236e9fb41a57fd587137c1f0506da4eab251cebcd4b3b1809d0acf",
+    "expected_normalized_json": "{\"host\":\"example.org\",\"path\":\"/bootstrap/19\",\"query\":{\"rid\":\"rid-19\",\"token\":\"rtk-019\"},\"scheme\":\"https\",\"uri\":\"https://example.org/bootstrap/19?rid=rid-19&token=rtk-019\"}",
+    "notes": [
+      "Secure bootstrap URI"
+    ]
+  },
+  "payload_020": {
+    "payload_id": "payload_020",
+    "payload_kind": "wifi-direct",
+    "expected_text": "WIFI:T:WPA;S:LabNet-20;P:pass-020-A;H:false;;",
+    "expected_normalized_hash": "5c4bda10ca47eabbcc55bbfad3714e5bd1cb899b7c0f375a15682d0ba03777dd",
+    "expected_normalized_json": "{\"hidden\":\"false\",\"psk\":\"pass-020-A\",\"security\":\"WPA\",\"ssid\":\"LabNet-20\"}",
+    "notes": [
+      "Direct Wi-Fi onboarding payload"
+    ]
+  },
+  "payload_021": {
+    "payload_id": "payload_021",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"my;\\\"shiny\\\";ssid-21\",\"psk\":\"\\\"\\\"\\\"\\\\;;;buzz-21;;;\\\\\\\"\\\"\\\"\",\"CC\":\"US\",\"registration-id\":\"rid-special-21\",\"registration-token\":\"rtk-special-21\"}",
+    "expected_normalized_hash": "82f1abcc780d9151a44c67bf55d89a244d98a4828362e6c6c2380bb4f0659e38",
+    "expected_normalized_json": "{\"CC\":\"US\",\"psk\":\"\\\"\\\"\\\"\\\\;;;buzz-21;;;\\\\\\\"\\\"\\\"\",\"registration-id\":\"rid-special-21\",\"registration-token\":\"rtk-special-21\",\"ssid\":\"my;\\\"shiny\\\";ssid-21\"}",
+    "notes": [
+      "QR contains direct network credentials; consider secure bootstrap instead"
+    ]
+  },
+  "payload_022": {
+    "payload_id": "payload_022",
+    "payload_kind": "wifi-easy-connect",
+    "expected_text": "DPP:K:MDkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDIgADemo22;M:112233445566;C:81/1;I:Device-22;;",
+    "expected_normalized_hash": "6e738f6f1f5279c38079d485e740a580d3ce8528ce6eead3c5dd1056b9b40103",
+    "expected_normalized_json": "{\"uri\":\"DPP:K:MDkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDIgADemo22;M:112233445566;C:81/1;I:Device-22;;\"}",
+    "notes": [
+      "Bootstrap URI for Wi-Fi Easy Connect / DPP"
+    ]
+  },
+  "payload_023": {
+    "payload_id": "payload_023",
+    "payload_kind": "plain-text",
+    "expected_text": "Plain-text benchmark payload 23 with unicode Україна and control sentence.",
+    "expected_normalized_hash": "5885cd8ef107296e1dc64482dda1d762254defae76524ddce4e89a88831e06f6",
+    "expected_normalized_json": "{\"text\":\"Plain-text benchmark payload 23 with unicode Україна and control sentence.\"}",
+    "notes": [
+      "Unstructured payload"
+    ]
+  },
+  "payload_024": {
+    "payload_id": "payload_024",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Bench-24\",\"registration-id\":\"rid-24\",\"registration-token\":\"rtk-024\"}",
+    "expected_normalized_hash": "051f6a7a578b8d5aa71317fae3897a3eacc74c82becc43bb1d92035b6a2db8c3",
+    "expected_normalized_json": "{\"registration-id\":\"rid-24\",\"registration-token\":\"rtk-024\",\"ssid\":\"Bench-24\"}",
+    "notes": []
+  },
+  "payload_025": {
+    "payload_id": "payload_025",
+    "payload_kind": "secure-bootstrap-uri",
+    "expected_text": "https://example.org/bootstrap/25?rid=rid-25&token=rtk-025",
+    "expected_normalized_hash": "d6cab4e9ca5ef96b1957a09e36380150c88b8afd05fd5188891c496ccd82f3a0",
+    "expected_normalized_json": "{\"host\":\"example.org\",\"path\":\"/bootstrap/25\",\"query\":{\"rid\":\"rid-25\",\"token\":\"rtk-025\"},\"scheme\":\"https\",\"uri\":\"https://example.org/bootstrap/25?rid=rid-25&token=rtk-025\"}",
+    "notes": [
+      "Secure bootstrap URI"
+    ]
+  },
+  "payload_026": {
+    "payload_id": "payload_026",
+    "payload_kind": "wifi-direct",
+    "expected_text": "WIFI:T:WPA;S:LabNet-26;P:pass-026-A;H:false;;",
+    "expected_normalized_hash": "809ba6cf74d3371bb5f248d31af94d5bf71d321e419364e65951e4fb8170b7d1",
+    "expected_normalized_json": "{\"hidden\":\"false\",\"psk\":\"pass-026-A\",\"security\":\"WPA\",\"ssid\":\"LabNet-26\"}",
+    "notes": [
+      "Direct Wi-Fi onboarding payload"
+    ]
+  },
+  "payload_027": {
+    "payload_id": "payload_027",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"my;\\\"shiny\\\";ssid-27\",\"psk\":\"\\\"\\\"\\\"\\\\;;;buzz-27;;;\\\\\\\"\\\"\\\"\",\"CC\":\"US\",\"registration-id\":\"rid-special-27\",\"registration-token\":\"rtk-special-27\"}",
+    "expected_normalized_hash": "6405b60d1f4d91b65dbfbd17229f17d64b8d87af33663c2f397f62f7a2d5cd15",
+    "expected_normalized_json": "{\"CC\":\"US\",\"psk\":\"\\\"\\\"\\\"\\\\;;;buzz-27;;;\\\\\\\"\\\"\\\"\",\"registration-id\":\"rid-special-27\",\"registration-token\":\"rtk-special-27\",\"ssid\":\"my;\\\"shiny\\\";ssid-27\"}",
+    "notes": [
+      "QR contains direct network credentials; consider secure bootstrap instead"
+    ]
+  },
+  "payload_028": {
+    "payload_id": "payload_028",
+    "payload_kind": "wifi-easy-connect",
+    "expected_text": "DPP:K:MDkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDIgADemo28;M:112233445566;C:81/1;I:Device-28;;",
+    "expected_normalized_hash": "5fee88c1339948a9a584959c7cba7a64e5cafa0d6270fce93625f3f41263d726",
+    "expected_normalized_json": "{\"uri\":\"DPP:K:MDkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDIgADemo28;M:112233445566;C:81/1;I:Device-28;;\"}",
+    "notes": [
+      "Bootstrap URI for Wi-Fi Easy Connect / DPP"
+    ]
+  },
+  "payload_029": {
+    "payload_id": "payload_029",
+    "payload_kind": "plain-text",
+    "expected_text": "Plain-text benchmark payload 29 with unicode Україна and control sentence.",
+    "expected_normalized_hash": "b610cb0cc367d0318a03e0617cfc2d07c1cc4e5aa3f3c2e5f21115e88535a31e",
+    "expected_normalized_json": "{\"text\":\"Plain-text benchmark payload 29 with unicode Україна and control sentence.\"}",
+    "notes": [
+      "Unstructured payload"
+    ]
+  },
+  "payload_030": {
+    "payload_id": "payload_030",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Bench-30\",\"registration-id\":\"rid-30\",\"registration-token\":\"rtk-030\"}",
+    "expected_normalized_hash": "4ef1bb10454ff474b78169719c5100baab3919c358c60d618de1867e2bd6cc17",
+    "expected_normalized_json": "{\"registration-id\":\"rid-30\",\"registration-token\":\"rtk-030\",\"ssid\":\"Bench-30\"}",
+    "notes": []
+  },
+  "payload_031": {
+    "payload_id": "payload_031",
+    "payload_kind": "secure-bootstrap-uri",
+    "expected_text": "https://example.org/bootstrap/31?rid=rid-31&token=rtk-031",
+    "expected_normalized_hash": "8c662e659176ce9424ebfc160a0ae5b8e98d4d469a7ae32d79ce2618a5d7fc4b",
+    "expected_normalized_json": "{\"host\":\"example.org\",\"path\":\"/bootstrap/31\",\"query\":{\"rid\":\"rid-31\",\"token\":\"rtk-031\"},\"scheme\":\"https\",\"uri\":\"https://example.org/bootstrap/31?rid=rid-31&token=rtk-031\"}",
+    "notes": [
+      "Secure bootstrap URI"
+    ]
+  },
+  "payload_032": {
+    "payload_id": "payload_032",
+    "payload_kind": "wifi-direct",
+    "expected_text": "WIFI:T:WPA;S:LabNet-32;P:pass-032-A;H:false;;",
+    "expected_normalized_hash": "dd8846c1968dbb6cd70db2cec91c75c795ec1a9632a6c15bf310a272583bfed7",
+    "expected_normalized_json": "{\"hidden\":\"false\",\"psk\":\"pass-032-A\",\"security\":\"WPA\",\"ssid\":\"LabNet-32\"}",
+    "notes": [
+      "Direct Wi-Fi onboarding payload"
+    ]
+  },
+  "payload_033": {
+    "payload_id": "payload_033",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"my;\\\"shiny\\\";ssid-33\",\"psk\":\"\\\"\\\"\\\"\\\\;;;buzz-33;;;\\\\\\\"\\\"\\\"\",\"CC\":\"US\",\"registration-id\":\"rid-special-33\",\"registration-token\":\"rtk-special-33\"}",
+    "expected_normalized_hash": "4a7a3d1bd94c80d88040a4ae519121c38d194b835cb5b104092d7530096d7717",
+    "expected_normalized_json": "{\"CC\":\"US\",\"psk\":\"\\\"\\\"\\\"\\\\;;;buzz-33;;;\\\\\\\"\\\"\\\"\",\"registration-id\":\"rid-special-33\",\"registration-token\":\"rtk-special-33\",\"ssid\":\"my;\\\"shiny\\\";ssid-33\"}",
+    "notes": [
+      "QR contains direct network credentials; consider secure bootstrap instead"
+    ]
+  },
+  "payload_034": {
+    "payload_id": "payload_034",
+    "payload_kind": "wifi-easy-connect",
+    "expected_text": "DPP:K:MDkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDIgADemo34;M:112233445566;C:81/1;I:Device-34;;",
+    "expected_normalized_hash": "b556159c6c12088582814a8d72934c59e301431ce7f9289689fab731421097e2",
+    "expected_normalized_json": "{\"uri\":\"DPP:K:MDkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDIgADemo34;M:112233445566;C:81/1;I:Device-34;;\"}",
+    "notes": [
+      "Bootstrap URI for Wi-Fi Easy Connect / DPP"
+    ]
+  },
+  "payload_035": {
+    "payload_id": "payload_035",
+    "payload_kind": "plain-text",
+    "expected_text": "Plain-text benchmark payload 35 with unicode Україна and control sentence.",
+    "expected_normalized_hash": "868e248d98eb030171e90e4324b5e552d6e7542195c7d7625c4213820024ac93",
+    "expected_normalized_json": "{\"text\":\"Plain-text benchmark payload 35 with unicode Україна and control sentence.\"}",
+    "notes": [
+      "Unstructured payload"
+    ]
+  },
+  "payload_036": {
+    "payload_id": "payload_036",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Bench-36\",\"registration-id\":\"rid-36\",\"registration-token\":\"rtk-036\"}",
+    "expected_normalized_hash": "5a4d53e7396c5346972e9c3fd0563e92b9ef91e87ec77b4da3c21f12e15542a2",
+    "expected_normalized_json": "{\"registration-id\":\"rid-36\",\"registration-token\":\"rtk-036\",\"ssid\":\"Bench-36\"}",
+    "notes": []
+  },
+  "payload_037": {
+    "payload_id": "payload_037",
+    "payload_kind": "secure-bootstrap-uri",
+    "expected_text": "https://example.org/bootstrap/37?rid=rid-37&token=rtk-037",
+    "expected_normalized_hash": "0e1f8d21998bc4e5b888ab45bb58315aa212e373ec7da12e24e45f169554b623",
+    "expected_normalized_json": "{\"host\":\"example.org\",\"path\":\"/bootstrap/37\",\"query\":{\"rid\":\"rid-37\",\"token\":\"rtk-037\"},\"scheme\":\"https\",\"uri\":\"https://example.org/bootstrap/37?rid=rid-37&token=rtk-037\"}",
+    "notes": [
+      "Secure bootstrap URI"
+    ]
+  },
+  "payload_038": {
+    "payload_id": "payload_038",
+    "payload_kind": "wifi-direct",
+    "expected_text": "WIFI:T:WPA;S:LabNet-38;P:pass-038-A;H:false;;",
+    "expected_normalized_hash": "55aa90202672bb06f2fd4c9f86485df40d563dab83efb8bc53b7b22575e22117",
+    "expected_normalized_json": "{\"hidden\":\"false\",\"psk\":\"pass-038-A\",\"security\":\"WPA\",\"ssid\":\"LabNet-38\"}",
+    "notes": [
+      "Direct Wi-Fi onboarding payload"
+    ]
+  },
+  "payload_039": {
+    "payload_id": "payload_039",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"my;\\\"shiny\\\";ssid-39\",\"psk\":\"\\\"\\\"\\\"\\\\;;;buzz-39;;;\\\\\\\"\\\"\\\"\",\"CC\":\"US\",\"registration-id\":\"rid-special-39\",\"registration-token\":\"rtk-special-39\"}",
+    "expected_normalized_hash": "e2c98d94d3415ffba5f558dab0aeaacd40604e1af1226633ad9eb4e6443d9a26",
+    "expected_normalized_json": "{\"CC\":\"US\",\"psk\":\"\\\"\\\"\\\"\\\\;;;buzz-39;;;\\\\\\\"\\\"\\\"\",\"registration-id\":\"rid-special-39\",\"registration-token\":\"rtk-special-39\",\"ssid\":\"my;\\\"shiny\\\";ssid-39\"}",
+    "notes": [
+      "QR contains direct network credentials; consider secure bootstrap instead"
+    ]
+  },
+  "payload_040": {
+    "payload_id": "payload_040",
+    "payload_kind": "wifi-easy-connect",
+    "expected_text": "DPP:K:MDkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDIgADemo40;M:112233445566;C:81/1;I:Device-40;;",
+    "expected_normalized_hash": "da5375d541e4c41d7e745621f3780682c9313c27d834ee1adc3bc26bd7cd7ed5",
+    "expected_normalized_json": "{\"uri\":\"DPP:K:MDkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDIgADemo40;M:112233445566;C:81/1;I:Device-40;;\"}",
+    "notes": [
+      "Bootstrap URI for Wi-Fi Easy Connect / DPP"
+    ]
+  },
+  "payload_041": {
+    "payload_id": "payload_041",
+    "payload_kind": "plain-text",
+    "expected_text": "Plain-text benchmark payload 41 with unicode Україна and control sentence.",
+    "expected_normalized_hash": "679a2402b673e40d06a6c38f5c1d0e0aadc0861b393cfb48c968f47d3f124614",
+    "expected_normalized_json": "{\"text\":\"Plain-text benchmark payload 41 with unicode Україна and control sentence.\"}",
+    "notes": [
+      "Unstructured payload"
+    ]
+  },
+  "payload_042": {
+    "payload_id": "payload_042",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Bench-42\",\"registration-id\":\"rid-42\",\"registration-token\":\"rtk-042\"}",
+    "expected_normalized_hash": "76c2416a053e1c9646e94faeba785f99644050ea694b41754b148747f462f705",
+    "expected_normalized_json": "{\"registration-id\":\"rid-42\",\"registration-token\":\"rtk-042\",\"ssid\":\"Bench-42\"}",
+    "notes": []
+  },
+  "payload_043": {
+    "payload_id": "payload_043",
+    "payload_kind": "secure-bootstrap-uri",
+    "expected_text": "https://example.org/bootstrap/43?rid=rid-43&token=rtk-043",
+    "expected_normalized_hash": "d2cc0784f95c1fb669d9f37e2abb7ec80d867dcce1d0bf3ac36309f180ac7856",
+    "expected_normalized_json": "{\"host\":\"example.org\",\"path\":\"/bootstrap/43\",\"query\":{\"rid\":\"rid-43\",\"token\":\"rtk-043\"},\"scheme\":\"https\",\"uri\":\"https://example.org/bootstrap/43?rid=rid-43&token=rtk-043\"}",
+    "notes": [
+      "Secure bootstrap URI"
+    ]
+  },
+  "payload_044": {
+    "payload_id": "payload_044",
+    "payload_kind": "wifi-direct",
+    "expected_text": "WIFI:T:WPA;S:LabNet-44;P:pass-044-A;H:false;;",
+    "expected_normalized_hash": "ea8ac6b4cb4f6e925f80acc2ba75c60dacb6443f45ea0c9f843d0d3929a206a6",
+    "expected_normalized_json": "{\"hidden\":\"false\",\"psk\":\"pass-044-A\",\"security\":\"WPA\",\"ssid\":\"LabNet-44\"}",
+    "notes": [
+      "Direct Wi-Fi onboarding payload"
+    ]
+  },
+  "payload_045": {
+    "payload_id": "payload_045",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"my;\\\"shiny\\\";ssid-45\",\"psk\":\"\\\"\\\"\\\"\\\\;;;buzz-45;;;\\\\\\\"\\\"\\\"\",\"CC\":\"US\",\"registration-id\":\"rid-special-45\",\"registration-token\":\"rtk-special-45\"}",
+    "expected_normalized_hash": "2fd998721634f483b94e334c6bfbb18ba877f5f0c5cfe2e24812a92e66ba51d2",
+    "expected_normalized_json": "{\"CC\":\"US\",\"psk\":\"\\\"\\\"\\\"\\\\;;;buzz-45;;;\\\\\\\"\\\"\\\"\",\"registration-id\":\"rid-special-45\",\"registration-token\":\"rtk-special-45\",\"ssid\":\"my;\\\"shiny\\\";ssid-45\"}",
+    "notes": [
+      "QR contains direct network credentials; consider secure bootstrap instead"
+    ]
+  },
+  "payload_046": {
+    "payload_id": "payload_046",
+    "payload_kind": "wifi-easy-connect",
+    "expected_text": "DPP:K:MDkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDIgADemo46;M:112233445566;C:81/1;I:Device-46;;",
+    "expected_normalized_hash": "f1fb929af2386620346bf877e3d1b53ad6c8add7412dcbb3948429e0414572c4",
+    "expected_normalized_json": "{\"uri\":\"DPP:K:MDkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDIgADemo46;M:112233445566;C:81/1;I:Device-46;;\"}",
+    "notes": [
+      "Bootstrap URI for Wi-Fi Easy Connect / DPP"
+    ]
+  },
+  "payload_047": {
+    "payload_id": "payload_047",
+    "payload_kind": "plain-text",
+    "expected_text": "Plain-text benchmark payload 47 with unicode Україна and control sentence.",
+    "expected_normalized_hash": "a89d8af05aceccea5ddfe6675b18bebf05f7d698dcc9a2c9b0dcb1fcdc35b5ae",
+    "expected_normalized_json": "{\"text\":\"Plain-text benchmark payload 47 with unicode Україна and control sentence.\"}",
+    "notes": [
+      "Unstructured payload"
+    ]
+  },
+  "payload_048": {
+    "payload_id": "payload_048",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Bench-48\",\"registration-id\":\"rid-48\",\"registration-token\":\"rtk-048\"}",
+    "expected_normalized_hash": "658a7e3cfe2d3f340ea95b431983923a4f064f2e8a05c6ac5c196b878ad514d1",
+    "expected_normalized_json": "{\"registration-id\":\"rid-48\",\"registration-token\":\"rtk-048\",\"ssid\":\"Bench-48\"}",
+    "notes": []
+  },
+  "payload_049": {
+    "payload_id": "payload_049",
+    "payload_kind": "secure-bootstrap-uri",
+    "expected_text": "https://example.org/bootstrap/49?rid=rid-49&token=rtk-049",
+    "expected_normalized_hash": "f8770222c6f0fa68e767daa312d6f6d64d4b40c7b054a0ba8dcd8ad75db7328f",
+    "expected_normalized_json": "{\"host\":\"example.org\",\"path\":\"/bootstrap/49\",\"query\":{\"rid\":\"rid-49\",\"token\":\"rtk-049\"},\"scheme\":\"https\",\"uri\":\"https://example.org/bootstrap/49?rid=rid-49&token=rtk-049\"}",
+    "notes": [
+      "Secure bootstrap URI"
+    ]
+  }
+}

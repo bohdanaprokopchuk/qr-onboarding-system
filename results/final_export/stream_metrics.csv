@@ -1,0 +1,7 @@
+method,scenario,success_rate_pct,exact_match_rate_pct,normalized_match_rate_pct,mean_time_ms,first_success_frame_mean,count
+adaptive_full_stream,distance_small_qr,100.0,100.0,100.0,105.41,0,40
+adaptive_full_stream,glare,100.0,100.0,100.0,98.477,0,40
+adaptive_full_stream,low_light,100.0,100.0,100.0,108.609,0,40
+adaptive_no_roi_stream,distance_small_qr,100.0,100.0,100.0,128.721,0,40
+adaptive_no_roi_stream,glare,100.0,100.0,100.0,117.315,0,40
+adaptive_no_roi_stream,low_light,100.0,100.0,100.0,140.204,0,40

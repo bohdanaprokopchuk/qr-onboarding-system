@@ -15,6 +15,9 @@ def main() -> int:
         ('pytest', [sys.executable, '-m', 'pytest', 'tests', '-q']),
         ('research-benchmark', [sys.executable, 'tools/evaluate_research_pipeline.py', '--samples', '4']),
         ('binarization-benchmark', [sys.executable, 'tools/benchmark_binarization_methods.py', '--samples', '3']),
+        ('generate-static-benchmark-dataset', [sys.executable, 'tools/generate_static_dataset.py', '--payload-count', '2', '--output-root', 'assets/datasets/benchmark_static_smoke']),
+        ('run-static-benchmark', [sys.executable, 'tools/run_static_benchmark.py', '--manifest', 'assets/datasets/benchmark_static_smoke/manifest.csv', '--payload-catalog', 'assets/datasets/benchmark_static_smoke/payload_catalog.json', '--methods', 'raw_combined,fixed:proposed_integral,adaptive_full', '--out', 'results/static_benchmark_smoke.csv']),
+        ('aggregate-benchmarks', [sys.executable, 'tools/aggregate_benchmarks.py', '--static', 'results/static_benchmark_smoke.csv', '--outdir', 'results/thesis_ready_smoke']),
     ]
     rows = []
     for name, cmd in commands:
@@ -36,3 +39,4 @@ def main() -> int:
 
 if __name__ == '__main__':
     raise SystemExit(main())
+

@@ -1,0 +1,98 @@
+{
+  "split_payload_000": {
+    "payload_id": "split_payload_000",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Split-0\",\"registration-id\":\"split-rid-0\",\"registration-token\":\"split-rtk-0\",\"CC\":\"US\"}",
+    "expected_normalized_hash": "3dfaba59f59480116edd1ff260660491ef7ecd76881bc4c31869f0606aacefed",
+    "expected_normalized_json": "{\"CC\":\"US\",\"registration-id\":\"split-rid-0\",\"registration-token\":\"split-rtk-0\",\"ssid\":\"Split-0\"}",
+    "notes": []
+  },
+  "split_payload_001": {
+    "payload_id": "split_payload_001",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Split-1\",\"registration-id\":\"split-rid-1\",\"registration-token\":\"split-rtk-1\",\"CC\":\"US\"}",
+    "expected_normalized_hash": "f49210c634663f1fc824b5f5f4ab4d75555cd2ed6adf49eab777126f63d1a242",
+    "expected_normalized_json": "{\"CC\":\"US\",\"registration-id\":\"split-rid-1\",\"registration-token\":\"split-rtk-1\",\"ssid\":\"Split-1\"}",
+    "notes": []
+  },
+  "split_payload_002": {
+    "payload_id": "split_payload_002",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Split-2\",\"registration-id\":\"split-rid-2\",\"registration-token\":\"split-rtk-2\",\"CC\":\"US\"}",
+    "expected_normalized_hash": "2a8a43a4c9e10bb08d475e1d7370fc97b9530a50666a86e0690ebab13c0d1607",
+    "expected_normalized_json": "{\"CC\":\"US\",\"registration-id\":\"split-rid-2\",\"registration-token\":\"split-rtk-2\",\"ssid\":\"Split-2\"}",
+    "notes": []
+  },
+  "split_payload_003": {
+    "payload_id": "split_payload_003",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Split-3\",\"registration-id\":\"split-rid-3\",\"registration-token\":\"split-rtk-3\",\"CC\":\"US\"}",
+    "expected_normalized_hash": "964b2decdd272819be5854d4ebde6051d8ab1bacf8a2f47cc7e68ac51f4f938a",
+    "expected_normalized_json": "{\"CC\":\"US\",\"registration-id\":\"split-rid-3\",\"registration-token\":\"split-rtk-3\",\"ssid\":\"Split-3\"}",
+    "notes": []
+  },
+  "split_payload_004": {
+    "payload_id": "split_payload_004",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Split-4\",\"registration-id\":\"split-rid-4\",\"registration-token\":\"split-rtk-4\",\"CC\":\"US\"}",
+    "expected_normalized_hash": "1f9a26dec747c79b2f37fa66fa080b157bbe47039d87b31228669bae25ff49cb",
+    "expected_normalized_json": "{\"CC\":\"US\",\"registration-id\":\"split-rid-4\",\"registration-token\":\"split-rtk-4\",\"ssid\":\"Split-4\"}",
+    "notes": []
+  },
+  "split_payload_005": {
+    "payload_id": "split_payload_005",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Split-5\",\"registration-id\":\"split-rid-5\",\"registration-token\":\"split-rtk-5\",\"CC\":\"US\"}",
+    "expected_normalized_hash": "c325cb0e64ee9a2f7443fd628c518c910fcc1452cd75ca9d82ca395fdd81bddb",
+    "expected_normalized_json": "{\"CC\":\"US\",\"registration-id\":\"split-rid-5\",\"registration-token\":\"split-rtk-5\",\"ssid\":\"Split-5\"}",
+    "notes": []
+  },
+  "split_payload_006": {
+    "payload_id": "split_payload_006",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Split-6\",\"registration-id\":\"split-rid-6\",\"registration-token\":\"split-rtk-6\",\"CC\":\"US\"}",
+    "expected_normalized_hash": "355fc0b16c589a9ede210f30c8001b5b850be20db3144c7896252a0860c6836f",
+    "expected_normalized_json": "{\"CC\":\"US\",\"registration-id\":\"split-rid-6\",\"registration-token\":\"split-rtk-6\",\"ssid\":\"Split-6\"}",
+    "notes": []
+  },
+  "split_payload_007": {
+    "payload_id": "split_payload_007",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Split-7\",\"registration-id\":\"split-rid-7\",\"registration-token\":\"split-rtk-7\",\"CC\":\"US\"}",
+    "expected_normalized_hash": "51198114f89b47a2f88ab14f0e6449ae8f4a237582c19db72a6cc4576ad1972a",
+    "expected_normalized_json": "{\"CC\":\"US\",\"registration-id\":\"split-rid-7\",\"registration-token\":\"split-rtk-7\",\"ssid\":\"Split-7\"}",
+    "notes": []
+  },
+  "split_payload_008": {
+    "payload_id": "split_payload_008",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Split-8\",\"registration-id\":\"split-rid-8\",\"registration-token\":\"split-rtk-8\",\"CC\":\"US\"}",
+    "expected_normalized_hash": "688783d91b5d24eb72633f4502ca478b49bfc5210361f419463855d43b9b6fba",
+    "expected_normalized_json": "{\"CC\":\"US\",\"registration-id\":\"split-rid-8\",\"registration-token\":\"split-rtk-8\",\"ssid\":\"Split-8\"}",
+    "notes": []
+  },
+  "split_payload_009": {
+    "payload_id": "split_payload_009",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Split-9\",\"registration-id\":\"split-rid-9\",\"registration-token\":\"split-rtk-9\",\"CC\":\"US\"}",
+    "expected_normalized_hash": "ee29bac41cbd4f0bc4cbcd9779b437b73a34302c5ed06e6a2a6cd6f2d002af79",
+    "expected_normalized_json": "{\"CC\":\"US\",\"registration-id\":\"split-rid-9\",\"registration-token\":\"split-rtk-9\",\"ssid\":\"Split-9\"}",
+    "notes": []
+  },
+  "split_payload_010": {
+    "payload_id": "split_payload_010",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Split-10\",\"registration-id\":\"split-rid-10\",\"registration-token\":\"split-rtk-10\",\"CC\":\"US\"}",
+    "expected_normalized_hash": "8ad66284212018b377baede390e1161dabf4a3a13ca27bae98d1937097a207b6",
+    "expected_normalized_json": "{\"CC\":\"US\",\"registration-id\":\"split-rid-10\",\"registration-token\":\"split-rtk-10\",\"ssid\":\"Split-10\"}",
+    "notes": []
+  },
+  "split_payload_011": {
+    "payload_id": "split_payload_011",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Split-11\",\"registration-id\":\"split-rid-11\",\"registration-token\":\"split-rtk-11\",\"CC\":\"US\"}",
+    "expected_normalized_hash": "b676ad3349571fb6e5675c0af50a4a197840c990e81ca045ce57d6dbba6890a6",
+    "expected_normalized_json": "{\"CC\":\"US\",\"registration-id\":\"split-rid-11\",\"registration-token\":\"split-rtk-11\",\"ssid\":\"Split-11\"}",
+    "notes": []
+  }
+}

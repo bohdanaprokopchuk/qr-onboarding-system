@@ -1,0 +1,16 @@
+sequence_id,frame_index,image_path,scenario,severity,payload_id,payload_kind,expected_present,notes
+distance_small_qr_00,0,distance_small_qr_00/frame_000.png,distance_small_qr,temporal,stream_payload_000,json-v1,True,Deterministic temporal ROI benchmark frame
+distance_small_qr_00,1,distance_small_qr_00/frame_001.png,distance_small_qr,temporal,stream_payload_000,json-v1,True,Deterministic temporal ROI benchmark frame
+distance_small_qr_00,2,distance_small_qr_00/frame_002.png,distance_small_qr,temporal,stream_payload_000,json-v1,True,Deterministic temporal ROI benchmark frame
+distance_small_qr_00,3,distance_small_qr_00/frame_003.png,distance_small_qr,temporal,stream_payload_000,json-v1,True,Deterministic temporal ROI benchmark frame
+distance_small_qr_00,4,distance_small_qr_00/frame_004.png,distance_small_qr,temporal,stream_payload_000,json-v1,True,Deterministic temporal ROI benchmark frame
+low_light_01,0,low_light_01/frame_000.png,low_light,temporal,stream_payload_001,json-v1,True,Deterministic temporal ROI benchmark frame
+low_light_01,1,low_light_01/frame_001.png,low_light,temporal,stream_payload_001,json-v1,True,Deterministic temporal ROI benchmark frame
+low_light_01,2,low_light_01/frame_002.png,low_light,temporal,stream_payload_001,json-v1,True,Deterministic temporal ROI benchmark frame
+low_light_01,3,low_light_01/frame_003.png,low_light,temporal,stream_payload_001,json-v1,True,Deterministic temporal ROI benchmark frame
+low_light_01,4,low_light_01/frame_004.png,low_light,temporal,stream_payload_001,json-v1,True,Deterministic temporal ROI benchmark frame
+glare_02,0,glare_02/frame_000.png,glare,temporal,stream_payload_002,json-v1,True,Deterministic temporal ROI benchmark frame
+glare_02,1,glare_02/frame_001.png,glare,temporal,stream_payload_002,json-v1,True,Deterministic temporal ROI benchmark frame
+glare_02,2,glare_02/frame_002.png,glare,temporal,stream_payload_002,json-v1,True,Deterministic temporal ROI benchmark frame
+glare_02,3,glare_02/frame_003.png,glare,temporal,stream_payload_002,json-v1,True,Deterministic temporal ROI benchmark frame
+glare_02,4,glare_02/frame_004.png,glare,temporal,stream_payload_002,json-v1,True,Deterministic temporal ROI benchmark frame

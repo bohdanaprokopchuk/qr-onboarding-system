@@ -424,3 +424,117 @@ class EnhancedQRSystem:
 
     def pipeline_stats_summary(self) -> dict:
         return self.stats.summary()
+
+    def reset_runtime_state(self) -> None:
+        self.frames = MultiFrameBuffer(maxlen=self.frames.maxlen)
+        self.assembler = SplitQRAssembler()
+        self.roi_tracker = QRROITracker(padding=self.roi_tracker.padding)
+        self.calibrator = AdaptiveThresholdCalibrator(warmup_frames=self.calibrator.warmup_frames)
+        self.selector = OnlinePipelineSelector(self.reader, self.stats)
+
+    def _classify_once(self, image: np.ndarray) -> tuple[str, list[str], Any | None]:
+        thresholds = self.calibrator.thresholds()
+        scenario, notes, points, _quality = self.selector.classify(image, thresholds)
+        return scenario, list(notes), points
+
+    def scan_fixed_stage(self, image: np.ndarray, stage_name: str) -> EnhancedScanResult:
+        scenario, notes, points = self._classify_once(image)
+        candidate = next((cand for cand in build_candidates(image, points) if cand.name == stage_name), None)
+        if candidate is None:
+            return EnhancedScanResult(success=False, notes=self._merge_notes(notes, [f'Unknown fixed preprocessing stage: {stage_name}']), error='Unknown fixed preprocessing stage', scenario=scenario)
+        stage_input = candidate.image if candidate.image.ndim == 3 else cv2.cvtColor(candidate.image, cv2.COLOR_GRAY2BGR)
+        trial = self.reader.scan_image_direct(stage_input)
+        if trial.polygon is not None:
+            trial.polygon = candidate.remap_polygon(trial.polygon)
+        if trial.success:
+            out = self._post(trial, self._merge_notes(notes, [f'Decode succeeded using fixed stage: {stage_name}']), scenario=scenario, roi_used=False)
+            out.enhancement_stage = stage_name
+            return out
+        return EnhancedScanResult(success=False, base_result=trial, notes=self._merge_notes(notes, [f'Fixed preprocessing stage failed: {stage_name}']), error=trial.error or 'Fixed preprocessing stage failed', scenario=scenario)
+
+    def scan_without_roi(self, image: np.ndarray) -> EnhancedScanResult:
+        scenario, notes, points = self._classify_once(image)
+        direct, _latency_ms = self._scan_direct(image, notes, scenario, roi_used=False)
+        if self._has_any_qr_hit(direct):
+            return direct
+        notes = self._merge_notes(notes, direct.notes)
+        switched = self._scan_candidate_order(image, notes, scenario, roi_used=False, points=points)
+        if self._has_any_qr_hit(switched):
+            return switched
+        notes = self._merge_notes(notes, switched.notes)
+        ml_result = self._scan_ml_stages(image, notes, scenario, roi_used=False)
+        if self._has_any_qr_hit(ml_result):
+            return ml_result
+        return EnhancedScanResult(success=False, base_result=direct.base_result, notes=self._merge_notes(notes, ml_result.notes), error=direct.error or switched.error or ml_result.error or 'Enhanced decode failed', scenario=scenario, roi_used=False)
+
+    def scan_without_ml(self, image: np.ndarray) -> EnhancedScanResult:
+        scenario, notes, points = self._classify_once(image)
+        direct, _latency_ms = self._scan_direct(image, notes, scenario, roi_used=False)
+        if self._has_any_qr_hit(direct):
+            return direct
+        notes = self._merge_notes(notes, direct.notes)
+        switched = self._scan_candidate_order(image, notes, scenario, roi_used=False, points=points)
+        if self._has_any_qr_hit(switched):
+            return switched
+        return EnhancedScanResult(success=False, base_result=direct.base_result, notes=self._merge_notes(notes, switched.notes), error=direct.error or switched.error or 'Adaptive decode without ML failed', scenario=scenario, roi_used=False)
+
+    def scan_switch_only(self, image: np.ndarray) -> EnhancedScanResult:
+        return self.scan_without_ml(image)
+
+    def scan_without_switch(self, image: np.ndarray) -> EnhancedScanResult:
+        scenario, notes, _points = self._classify_once(image)
+        direct, _latency_ms = self._scan_direct(image, notes, scenario, roi_used=False)
+        if self._has_any_qr_hit(direct):
+            return direct
+        notes = self._merge_notes(notes, direct.notes, ['Scenario-based switching disabled'])
+        ml_result = self._scan_ml_stages(image, notes, scenario, roi_used=False)
+        if self._has_any_qr_hit(ml_result):
+            return ml_result
+        return EnhancedScanResult(success=False, base_result=direct.base_result, notes=self._merge_notes(notes, ml_result.notes), error=direct.error or ml_result.error or 'Adaptive decode without switching failed', scenario=scenario, roi_used=False)
+
+    def scan_without_quality_assessment(self, image: np.ndarray, forced_scenario: str = 'balanced') -> EnhancedScanResult:
+        points = self.reader.locator.detect(image)
+        notes = [f'Quality assessment disabled; forced scenario={forced_scenario}']
+        direct, _latency_ms = self._scan_direct(image, notes, forced_scenario, roi_used=False)
+        if self._has_any_qr_hit(direct):
+            return direct
+        notes = self._merge_notes(notes, direct.notes)
+        switched = self._scan_candidate_order(image, notes, forced_scenario, roi_used=False, points=points)
+        if self._has_any_qr_hit(switched):
+            return switched
+        notes = self._merge_notes(notes, switched.notes)
+        ml_result = self._scan_ml_stages(image, notes, forced_scenario, roi_used=False)
+        if self._has_any_qr_hit(ml_result):
+            return ml_result
+        return EnhancedScanResult(success=False, base_result=direct.base_result, notes=self._merge_notes(notes, ml_result.notes), error=direct.error or switched.error or ml_result.error or 'Adaptive decode without quality assessment failed', scenario=forced_scenario, roi_used=False)
+
+    def scan_ml_only(self, image: np.ndarray) -> EnhancedScanResult:
+        scenario, notes, _points = self._classify_once(image)
+        direct, _latency_ms = self._scan_direct(image, notes, scenario, roi_used=False)
+        if self._has_any_qr_hit(direct):
+            return direct
+        notes = self._merge_notes(notes, direct.notes, ['Scenario-based switching skipped; using ML-only fallback'])
+        ml_result = self._scan_ml_stages(image, notes, scenario, roi_used=False)
+        if self._has_any_qr_hit(ml_result):
+            return ml_result
+        return EnhancedScanResult(success=False, base_result=direct.base_result, notes=self._merge_notes(notes, ml_result.notes), error=direct.error or ml_result.error or 'ML-only fallback failed', scenario=scenario, roi_used=False)
+
+    def scan_stream_frame_without_roi(self, frame: np.ndarray, camera_adaptation: dict[str, Any] | None = None) -> EnhancedScanResult:
+        quality = evaluate_quality(frame)
+        self.calibrator.update(quality.mean_brightness, quality.laplacian_variance, quality.contrast_stddev)
+        self.frames.push(frame)
+        single = self.scan_without_roi(frame)
+        if self._has_any_qr_hit(single):
+            single.camera_adaptation = camera_adaptation
+            return single
+        if len(self.frames) >= 3:
+            fused = self.frames.fused()
+            if fused is not None:
+                fused_result = self.scan_without_roi(fused)
+                if self._has_any_qr_hit(fused_result):
+                    fused_result.notes = self._merge_notes(fused_result.notes, ['Decode recovered via multi-frame fusion'])
+                    fused_result.enhancement_stage = fused_result.enhancement_stage or 'multi-frame-fusion'
+                    fused_result.camera_adaptation = camera_adaptation
+                    return fused_result
+        single.camera_adaptation = camera_adaptation
+        return single

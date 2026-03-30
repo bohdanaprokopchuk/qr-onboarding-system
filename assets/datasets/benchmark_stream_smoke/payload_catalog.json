@@ -1,0 +1,26 @@
+{
+  "stream_payload_000": {
+    "payload_id": "stream_payload_000",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Stream-0\",\"registration-id\":\"stream-rid-0\",\"registration-token\":\"stream-rtk-0\"}",
+    "expected_normalized_hash": "04b98fb2d248faa9341d9d69d9880797d5fbd7b238af842d6fc31a841912d05f",
+    "expected_normalized_json": "{\"registration-id\":\"stream-rid-0\",\"registration-token\":\"stream-rtk-0\",\"ssid\":\"Stream-0\"}",
+    "notes": []
+  },
+  "stream_payload_001": {
+    "payload_id": "stream_payload_001",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Stream-1\",\"registration-id\":\"stream-rid-1\",\"registration-token\":\"stream-rtk-1\"}",
+    "expected_normalized_hash": "012fcd3abf0beafe5c2ec8ac53b935752b8ca5dd1b711d78e65b03a65496b5f1",
+    "expected_normalized_json": "{\"registration-id\":\"stream-rid-1\",\"registration-token\":\"stream-rtk-1\",\"ssid\":\"Stream-1\"}",
+    "notes": []
+  },
+  "stream_payload_002": {
+    "payload_id": "stream_payload_002",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Stream-2\",\"registration-id\":\"stream-rid-2\",\"registration-token\":\"stream-rtk-2\"}",
+    "expected_normalized_hash": "2f0582085c7dc59fd75ccb6e6bc0266874ecbb575e6a22435f50710e279d920a",
+    "expected_normalized_json": "{\"registration-id\":\"stream-rid-2\",\"registration-token\":\"stream-rtk-2\",\"ssid\":\"Stream-2\"}",
+    "notes": []
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "stream_payload_000": {
+    "payload_id": "stream_payload_000",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Stream-0\",\"registration-id\":\"stream-rid-0\",\"registration-token\":\"stream-rtk-0\"}",
+    "expected_normalized_hash": "04b98fb2d248faa9341d9d69d9880797d5fbd7b238af842d6fc31a841912d05f",
+    "expected_normalized_json": "{\"registration-id\":\"stream-rid-0\",\"registration-token\":\"stream-rtk-0\",\"ssid\":\"Stream-0\"}",
+    "notes": []
+  },
+  "stream_payload_001": {
+    "payload_id": "stream_payload_001",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Stream-1\",\"registration-id\":\"stream-rid-1\",\"registration-token\":\"stream-rtk-1\"}",
+    "expected_normalized_hash": "012fcd3abf0beafe5c2ec8ac53b935752b8ca5dd1b711d78e65b03a65496b5f1",
+    "expected_normalized_json": "{\"registration-id\":\"stream-rid-1\",\"registration-token\":\"stream-rtk-1\",\"ssid\":\"Stream-1\"}",
+    "notes": []
+  },
+  "stream_payload_002": {
+    "payload_id": "stream_payload_002",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Stream-2\",\"registration-id\":\"stream-rid-2\",\"registration-token\":\"stream-rtk-2\"}",
+    "expected_normalized_hash": "2f0582085c7dc59fd75ccb6e6bc0266874ecbb575e6a22435f50710e279d920a",
+    "expected_normalized_json": "{\"registration-id\":\"stream-rid-2\",\"registration-token\":\"stream-rtk-2\",\"ssid\":\"Stream-2\"}",
+    "notes": []
+  },
+  "stream_payload_003": {
+    "payload_id": "stream_payload_003",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Stream-3\",\"registration-id\":\"stream-rid-3\",\"registration-token\":\"stream-rtk-3\"}",
+    "expected_normalized_hash": "d02e9f8e4375b978d795b72d41ae1b03d273ddb0f8c1cc94e8b1fdb7576d0c07",
+    "expected_normalized_json": "{\"registration-id\":\"stream-rid-3\",\"registration-token\":\"stream-rtk-3\",\"ssid\":\"Stream-3\"}",
+    "notes": []
+  },
+  "stream_payload_004": {
+    "payload_id": "stream_payload_004",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Stream-4\",\"registration-id\":\"stream-rid-4\",\"registration-token\":\"stream-rtk-4\"}",
+    "expected_normalized_hash": "05b560648acdf97b8582510583c9874c83f2af3f5fe99833285d727565278189",
+    "expected_normalized_json": "{\"registration-id\":\"stream-rid-4\",\"registration-token\":\"stream-rtk-4\",\"ssid\":\"Stream-4\"}",
+    "notes": []
+  },
+  "stream_payload_005": {
+    "payload_id": "stream_payload_005",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Stream-5\",\"registration-id\":\"stream-rid-5\",\"registration-token\":\"stream-rtk-5\"}",
+    "expected_normalized_hash": "9616298c5fb319a1f3f4f6a7223e6b3665a48e686469702b053a7af112cd00d9",
+    "expected_normalized_json": "{\"registration-id\":\"stream-rid-5\",\"registration-token\":\"stream-rtk-5\",\"ssid\":\"Stream-5\"}",
+    "notes": []
+  },
+  "stream_payload_006": {
+    "payload_id": "stream_payload_006",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Stream-6\",\"registration-id\":\"stream-rid-6\",\"registration-token\":\"stream-rtk-6\"}",
+    "expected_normalized_hash": "cc6714459b3f9a482c437fa0a4e13322dffac8f93ceb3fdad56524e22ce5b73a",
+    "expected_normalized_json": "{\"registration-id\":\"stream-rid-6\",\"registration-token\":\"stream-rtk-6\",\"ssid\":\"Stream-6\"}",
+    "notes": []
+  },
+  "stream_payload_007": {
+    "payload_id": "stream_payload_007",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Stream-7\",\"registration-id\":\"stream-rid-7\",\"registration-token\":\"stream-rtk-7\"}",
+    "expected_normalized_hash": "7ee7788c361e8324d1094b62df6130d35ba1807dbcd67010c86ff232684c98a9",
+    "expected_normalized_json": "{\"registration-id\":\"stream-rid-7\",\"registration-token\":\"stream-rtk-7\",\"ssid\":\"Stream-7\"}",
+    "notes": []
+  },
+  "stream_payload_008": {
+    "payload_id": "stream_payload_008",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Stream-8\",\"registration-id\":\"stream-rid-8\",\"registration-token\":\"stream-rtk-8\"}",
+    "expected_normalized_hash": "784fd55d69ce0910053468bcea90091f3ee37bb98de08213ca29313d7f9d714e",
+    "expected_normalized_json": "{\"registration-id\":\"stream-rid-8\",\"registration-token\":\"stream-rtk-8\",\"ssid\":\"Stream-8\"}",
+    "notes": []
+  },
+  "stream_payload_009": {
+    "payload_id": "stream_payload_009",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Stream-9\",\"registration-id\":\"stream-rid-9\",\"registration-token\":\"stream-rtk-9\"}",
+    "expected_normalized_hash": "1baa6594a5d1bfd93dc3e5576788baea0dcd5fa7536dbed7015d2cdf30a2c29f",
+    "expected_normalized_json": "{\"registration-id\":\"stream-rid-9\",\"registration-token\":\"stream-rtk-9\",\"ssid\":\"Stream-9\"}",
+    "notes": []
+  },
+  "stream_payload_010": {
+    "payload_id": "stream_payload_010",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Stream-10\",\"registration-id\":\"stream-rid-10\",\"registration-token\":\"stream-rtk-10\"}",
+    "expected_normalized_hash": "28a99d4f395883a6d92d0bf2e1e8213160a743d793d255b8be6f5c1891491319",
+    "expected_normalized_json": "{\"registration-id\":\"stream-rid-10\",\"registration-token\":\"stream-rtk-10\",\"ssid\":\"Stream-10\"}",
+    "notes": []
+  },
+  "stream_payload_011": {
+    "payload_id": "stream_payload_011",
+    "payload_kind": "json-v1",
+    "expected_text": "{\"ssid\":\"Stream-11\",\"registration-id\":\"stream-rid-11\",\"registration-token\":\"stream-rtk-11\"}",
+    "expected_normalized_hash": "1aa5830691fec1b2c0fd4978c569491235a447c86aff027912acee2d8be40ade",
+    "expected_normalized_json": "{\"registration-id\":\"stream-rid-11\",\"registration-token\":\"stream-rtk-11\",\"ssid\":\"Stream-11\"}",
+    "notes": []
+  }
+}
