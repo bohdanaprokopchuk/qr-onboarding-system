@@ -1,9 +1,0 @@
-step,returncode,stdout_tail,stderr_tail
-pytest,0,"................................                                         [100%]
-32 passed in 11.44s
-",
-research-benchmark,0,"{'samples': 20, 'direct_successes': 20, 'classic_successes': 20, 'enhanced_successes': 20, 'per_scenario': {'clean': {'direct': 4, 'classic': 4, 'enhanced': 4, 'total': 4}, 'blur': {'direct': 4, 'classic': 4, 'enhanced': 4, 'total': 4}, 'low_light': {'direct': 4, 'classic': 4, 'enhanced': 4, 'total': 4}, 'small_qr': {'direct': 4, 'classic': 4, 'enhanced': 4, 'total': 4}, 'combined': {'direct': 4, 'classic': 4, 'enhanced': 4, 'total': 4}}, 'top_enhancement_stages': [('direct', 20)], 'csv': 'research_benchmark.csv'}
-",
-binarization-benchmark,0,"{'otsu': {'mean_elapsed_seconds': 0.000544, 'recognition_rate_percent': 100.0, 'samples': 18}, 'niblack': {'mean_elapsed_seconds': 0.017712, 'recognition_rate_percent': 100.0, 'samples': 18}, 'yao': {'mean_elapsed_seconds': 0.021531, 'recognition_rate_percent': 100.0, 'samples': 18}, 'di': {'mean_elapsed_seconds': 0.036184, 'recognition_rate_percent': 100.0, 'samples': 18}, 'proposed_integral': {'mean_elapsed_seconds': 0.026184, 'recognition_rate_percent': 100.0, 'samples': 18}}
-{'csv': 'binarization_benchmark.csv'}
-",
